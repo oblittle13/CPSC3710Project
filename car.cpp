@@ -43,7 +43,7 @@ Car::Car(GLuint vertexLoc, GLuint faceLoc,
                 vec4(-0.40, 0.50, 0.25, 1.0), vec4(-0.50, 0.50, 0.25, 1.0),
                 vec4(-0.50, 0.25, 0.25, 1.0), vec4(-0.40, 0.25, 0.25, 1.0),
                 vec4(-0.40, 0.25, 0.50, 1.0), vec4(-0.50, 0.25, 0.50, 1.0),
-                vec4(-0.40, 0.25, 0.50, 1.0), vec4(-0.50, 0.25, 0.50, 1.0), //douplicated for dummy top
+                vec4(-0.40, 0.25, 0.50, 1.0), vec4(-0.50, 0.25, 0.50, 1.0), //doplicated for dummy top
             },
 
             //Driver front pillar -- 3
@@ -83,7 +83,7 @@ Car::Car(GLuint vertexLoc, GLuint faceLoc,
                 vec4(-0.40, 0.50, 0.25, 1.0), vec4(0.40, 0.50, 0.25, 1.0),
                 vec4(-0.40, 0.25, 0.25, 1.0), vec4(0.40, 0.25, 0.25, 1.0),
                 vec4(-0.40, 0.25, 0.50, 1.0), vec4(0.40, 0.25, 0.50, 1.0),
-                vec4(-0.40, 0.25, 0.50, 1.0), vec4(0.40, 0.25, 0.50, 1.0), //douplicated for dummy top
+                vec4(-0.40, 0.25, 0.50, 1.0), vec4(0.40, 0.25, 0.50, 1.0), //duplicated for dummy top
             },
 
             //Back windshield -- 8
