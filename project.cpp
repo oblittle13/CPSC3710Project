@@ -2,6 +2,7 @@
 #include <iostream>
 
 #include "car.h"
+#include "building.h"
 
 using namespace std;
 
@@ -17,6 +18,7 @@ GLint faceColourLoc, modelLoc, viewLoc, projLoc;
 
 vec4 eye;
 Car *car[1];
+building* builds[20];
 
 bool top = false;
 
@@ -34,7 +36,7 @@ void init()
   GLuint loc = glGetAttribLocation( program, "vPosition" );
 
   car[0] = new Car(loc, faceColourLoc, modelLoc, vec4(0, 0, 0, 0), 0, 0, 0.125, 3, 3, 3);
-  
+  builds[0] = new building(1, loc, faceColourLoc, modelLoc, vec4(3, 0, 0, 0));
   glClearColor( 0.40, 0.40, 0.40, 1.0 ); // gray background
 
   glEnable(GL_DEPTH_TEST);
@@ -118,6 +120,18 @@ void display( void )
     car[i]->draw();
   }
 
+  GLfloat v = 0.75;
+  vec4 colour[4] =
+{ vec4(v,v,v,1),
+  vec4(v,v,v,1),
+  vec4(v,v,v,1),
+  vec4(v,v,v,1)
+};
+
+  for (int i = 0; i < 1; i++) {
+    builds[i]->draw(colour);
+  }
+
   glutSwapBuffers();
 }
 
@@ -186,9 +200,9 @@ int main( int argc, char **argv )
   glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
   glutInitWindowSize(512, 512);
 
-  // If you are using freeglut, the next two lines will check if 
+  // If you are using freeglut, the next two lines will check if
   // the code is truly 3.2. Otherwise, comment them out
-    
+
   glutInitContextVersion(3, 2);
   glutInitContextProfile(GLUT_CORE_PROFILE);
 
@@ -201,11 +215,14 @@ int main( int argc, char **argv )
   glutDisplayFunc(display);
   glutKeyboardFunc(keyboard);
   glutSpecialFunc(arrow);
-  
+
   glutMainLoop();
 
   for (int i = 0; i < 1; i++) {
     delete car[i];
+  }
+  for (int i = 0; i < 1; i++) {
+    delete builds[i];
   }
   return 0;
 }
