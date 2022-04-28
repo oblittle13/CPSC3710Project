@@ -243,9 +243,6 @@ int main( int argc, char **argv )
   for (int i = 0; i < 1; i++) {
     delete builds[i];
   }
-  return 0;
-  }
-
   for (int i = 0; i < 2; i++) {
     delete light[i];
   }
