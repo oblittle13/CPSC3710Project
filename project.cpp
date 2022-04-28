@@ -19,6 +19,7 @@ GLint faceColourLoc, modelLoc, viewLoc, projLoc;
 vec4 eye;
 Car *car[1];
 building* builds[20];
+Light* light[10];
 
 bool top = false;
 
@@ -37,6 +38,8 @@ void init()
 
   car[0] = new Car(loc, faceColourLoc, modelLoc, vec4(0, 0, 0, 0), 0, 0, 0.125, 3, 3, 3);
   builds[0] = new building(1, loc, faceColourLoc, modelLoc, vec4(3, 0, 0, 0));
+  light[0] - new Light(loc, faceColourLoc, modelLoc, vec4(1, 0, 0, 0),
+           0, 0, 90, 1, 1, 1);
   glClearColor( 0.40, 0.40, 0.40, 1.0 ); // gray background
 
   glEnable(GL_DEPTH_TEST);
@@ -132,6 +135,10 @@ void display( void )
     builds[i]->draw(colour);
   }
 
+  for (int i = 0; i < 4; i++) {
+    light[i]->draw();
+  }
+
   glutSwapBuffers();
 }
 
@@ -194,6 +201,17 @@ void arrow(int key, int x, int y) {
 
 //---------------------------------------------------------------------------
 
+void timer(int val)
+{
+  for (int i = 0; i < 4; i++) {
+    light[i]->next_colour();
+  }
+  glutPostRedisplay();
+  glutTimerFunc(3000, timer, 0);
+}
+
+//---------------------------------------------------------------------------
+
 int main( int argc, char **argv )
 {
   glutInit(&argc, argv);
@@ -215,6 +233,7 @@ int main( int argc, char **argv )
   glutDisplayFunc(display);
   glutKeyboardFunc(keyboard);
   glutSpecialFunc(arrow);
+  glutTimerFunc(3000, timer, 0);
 
   glutMainLoop();
 
@@ -225,4 +244,10 @@ int main( int argc, char **argv )
     delete builds[i];
   }
   return 0;
-}
+  }
+
+  for (int i = 0; i < 2; i++) {
+    delete light[i];
+  }
+  return 0;
+  }

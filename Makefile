@@ -18,9 +18,13 @@ car.o: car.cpp
 building.o: building.cpp
 		$(CC) $(CFLAGS) -c building.cpp
 
+trafficLight.o: trafficLight.cpp
+				$(CC) $(CFLAGS) -c trafficLight.cpp
+
 project.o: car.h building.h
 car.o: car.h
 building.o: building.h
+trafficLight.o: trafficLight.o
 
 InitShader.o: common/InitShader.cc
 	$(CC) $(CFLAGS) -c $^
