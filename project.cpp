@@ -90,6 +90,8 @@ vec4 getEye() {
   direction current = car[0]->getFacing();
   vec4 temp;
 
+  current = east;
+
   if (current == north) {
     temp = vec4(0, -5, 2, 0);
   } else if (current == east) {
@@ -186,7 +188,7 @@ void display( void )
   } else {
     behindView();
   }
-   drawBuildings();
+  //drawBuildings();
 
   for (int i = 0; i < 1; i++) {
     car[i]->draw();
@@ -297,7 +299,7 @@ int main( int argc, char **argv )
   for (int i = 0; i < 1; i++) {
     delete car[i];
   }
-  for (int i = 0; i < 1; i++) {
+  for (int i = 0; i < 24; i++) {
     delete builds[i];
   }
   for (int i = 0; i < 1; i++) {
