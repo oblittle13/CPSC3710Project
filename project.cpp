@@ -20,7 +20,7 @@ GLuint faceColourLoc, modelLoc, viewLoc, projLoc;
 
 vec4 eye;
 Car *car[1];
-building* builds[20];
+building* builds[23];
 Light* light[10];
 Road *road[1];
 
@@ -40,7 +40,40 @@ void init()
   GLuint loc = glGetAttribLocation( program, "vPosition" );
 
   car[0] = new Car(loc, faceColourLoc, modelLoc, vec4(0, 0, 0, 0), 0, 0, 0.125, 1, 1, 1);
-  builds[0] = new building(1, loc, faceColourLoc, modelLoc, vec4(3, 0, 0, 0));
+
+  //south
+  builds[0] = new building(3, loc, faceColourLoc, modelLoc, vec4(3, 0, 0, 0));
+  builds[1] = new building(4, loc, faceColourLoc, modelLoc, vec4(-3, 0, 0, 0));
+  builds[2] = new building(2, loc, faceColourLoc, modelLoc, vec4(3, 5, 0, 0));
+  builds[3] = new building(1, loc, faceColourLoc, modelLoc, vec4(-3, 5, 0, 0));
+  builds[4] = new building(4, loc, faceColourLoc, modelLoc, vec4(3, 10, 0, 0),0, 0, 90);
+  builds[5] = new building(3, loc, faceColourLoc, modelLoc, vec4(-3, 10, 0, 0));
+
+  //north
+  builds[6] = new building(2, loc, faceColourLoc, modelLoc, vec4(-3, 15, 0, 0));
+  builds[7] = new building(1, loc, faceColourLoc, modelLoc, vec4(3, 15, 0, 0));
+  builds[8] = new building(4, loc, faceColourLoc, modelLoc, vec4(-3, 20, 0, 0));
+  builds[9] = new building(3, loc, faceColourLoc, modelLoc, vec4(3, 20, 0, 0));
+  builds[10] = new building(1, loc, faceColourLoc, modelLoc, vec4(-3, 25, 0, 0));
+  builds[11] = new building(4, loc, faceColourLoc, modelLoc, vec4(3, 25, 0, 0));
+
+  //south West - south east
+  builds[12] = new building(2, loc, faceColourLoc, modelLoc, vec4(6, 10, 0, 0));
+  builds[13] = new building(1, loc, faceColourLoc, modelLoc, vec4(-6, 10, 0, 0));
+  builds[14] = new building(3, loc, faceColourLoc, modelLoc, vec4(9, 10, 0, 0));
+  builds[15] = new building(4, loc, faceColourLoc, modelLoc, vec4(-9, 10, 0, 0));
+  builds[16] = new building(1, loc, faceColourLoc, modelLoc, vec4(12, 10, 0, 0));
+  builds[17] = new building(2, loc, faceColourLoc, modelLoc, vec4(-12, 10, 0, 0));
+
+  //north west to north east
+  builds[18] = new building(3, loc, faceColourLoc, modelLoc, vec4(-6, 15, 0, 0));
+  builds[19] = new building(4, loc, faceColourLoc, modelLoc, vec4(6, 15, 0, 0));
+  builds[20] = new building(1, loc, faceColourLoc, modelLoc, vec4(-9, 15, 0, 0));
+  builds[21] = new building(2, loc, faceColourLoc, modelLoc, vec4(9, 15, 0, 0));
+  builds[22] = new building(4, loc, faceColourLoc, modelLoc, vec4(-12, 15, 0, 0));
+  builds[23] = new building(3, loc, faceColourLoc, modelLoc, vec4(12, 15, 0, 0));
+
+
   light[0] = new Light(loc, faceColourLoc, modelLoc, vec4(1, 0, 0, 0),
            0, 0, 90, 1, 1, 1);
   road[0] = new Road(loc, faceColourLoc, modelLoc);
@@ -112,6 +145,37 @@ void topView() {
 }
 
 //---------------------------------------------------------------------------
+void drawBuildings() {
+  vec4 build1[3] =
+{ vec4(0.97,0,1,1), vec4(0.5,0,0.9,1), vec4(0.75,0.25,0.35,1),};
+  vec4 build2[3] =
+  { vec4(1,1,1,1), vec4(00,1,1,1), vec4(0.75,0.25,0.35,1),};
+  vec4 build3[3] =
+  { vec4(1,0.8,0.6,1), vec4(1,0,0,1),};
+  vec4 build4[4] =
+  { vec4(0.87,0.8,1,1), vec4(0.85,0,0.85,1), vec4(0,0,1,1),};
+  vec4 build5[4] =
+  { vec4(0.2,0.8,1,1), vec4(0.15,0,0.65,1), vec4(1,0,1,1),};
+  vec4 build6[4] =
+  { vec4(0.3,1,0.2,1), vec4(0.5,0.1,0.25,1), vec4(1,0,1,1),};
+
+
+
+
+  vec4 build[3] =
+{ vec4(0.75,0.75,0.75,1), vec4(0.75,0.75,0.75,1), vec4(0.75,0.75,0.75,1),};
+
+  builds[0]->draw(build1);
+  builds[1]->draw(build2);
+  builds[2]->draw(build3);
+  builds[3]->draw(build4);
+  builds[4]->draw(build4);
+  builds[5]->draw(build5);
+  builds[6]->draw(build6);
+
+}
+
+//---------------------------------------------------------------------------
 
 void display( void )
 {
@@ -122,22 +186,13 @@ void display( void )
   } else {
     behindView();
   }
+   drawBuildings();
 
   for (int i = 0; i < 1; i++) {
     car[i]->draw();
   }
 
-  GLfloat v = 0.75;
-  vec4 colour[4] =
-{ vec4(v,v,v,1),
-  vec4(v,v,v,1),
-  vec4(v,v,v,1),
-  vec4(v,v,v,1)
-};
 
-  for (int i = 0; i < 1; i++) {
-    builds[i]->draw(colour);
-  }
 
   for (int i = 0; i < 1; i++) {
     light[i]->draw();

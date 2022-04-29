@@ -10,7 +10,7 @@
      {0,4,7,3}   // right
     };
 
-building::building(int type, GLuint vertexLoc, GLuint faceLoc, GLuint modelLoc, vec4 pos, 
+building::building(int type, GLuint vertexLoc, GLuint faceLoc, GLuint modelLoc, vec4 pos,
                    GLfloat theta_x, GLfloat theta_y, GLfloat theta_z, GLfloat scale_x, GLfloat scale_y, GLfloat scale_z)
   : color_index{0}, vertex_loc{vertexLoc}, face_loc{faceLoc}, model_loc{modelLoc} {
     TYPE = type;
@@ -116,14 +116,14 @@ void building::typeOne() {
 }
 
 void building::typeTwo() {
-  
+
       const vec4 point[8] =
     { vec4(-1, -1, 0.0, 1.0), vec4(1, -1, 0.0, 1.0),
       vec4(1, 1, 0.0, 1.0), vec4(-1, 1, 0.0, 1.0),
       vec4(-1, -1, 1.0, 1.0), vec4(1, -1, 1.0, 1.0),
       vec4(1, 1, 1.0, 1.0), vec4(-1, 1, 1.0, 1.0)
     };
-  
+
   glGenVertexArrays(2, vao);
   glGenBuffers(2, buffer);
 
@@ -168,7 +168,7 @@ void building::typeThree() {
       vec4(-1, -1, 3.0, 1.0), vec4(1, -1, 3.0, 1.0),
       vec4(1, 1, 3.0, 1.0), vec4(-1, 1, 3.0, 1.0)
     };
-  
+
   glGenVertexArrays(5, vao);
   glGenBuffers(5, buffer);
 
@@ -183,7 +183,7 @@ void building::typeThree() {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo[i]);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, 4*sizeof(GLuint), face[i], GL_STATIC_DRAW);
   }
-    const vec4 point2[8] = { 
+    const vec4 point2[8] = {
       vec4(-0.75, -0.75, 3.0, 1.0), vec4(0.75, -0.75, 3.0, 1.0),
       vec4(0.75, 0.75, 3.0, 1.0), vec4(-0.75, 0.75, 3.0, 1.0),
       vec4(-0.75, -0.75, 5.0, 1.0), vec4(0.75, -0.75, 5.0, 1.0),
@@ -227,7 +227,7 @@ void building::typeThree() {
       vec4(-0.5, -1.01, 2.0, 1.0), vec4(0.5, -1.01, 2.0, 1.0),
       vec4(0.5, 1.01, 2.0, 1.0), vec4(-0.5, 1.01, 2.0, 1.0)
     };
-  
+
 
     glBindVertexArray(vao[3]);
   glBindBuffer(GL_ARRAY_BUFFER, buffer[3]);
@@ -260,7 +260,7 @@ void building::typeThree() {
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, 4*sizeof(GLuint), face[i], GL_STATIC_DRAW);
   }
 
-  
+
 
 }
 
@@ -328,7 +328,7 @@ void building::typeFour() {
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, 4*sizeof(GLuint), face[i], GL_STATIC_DRAW);
   }
 
-  
+
     const vec4 windows_point2[8] =
     { vec4(-1.01, 0, 1, 1.0), vec4(1.25, 0, 1, 1.0),
       vec4(1.25, -1.01, 1, 1.0), vec4(-1.01, -1.01, 1, 1.0),

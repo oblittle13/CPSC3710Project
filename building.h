@@ -19,7 +19,7 @@ public:
   void typeThree();
   void typeFour();
   void draw(vec4[]) const;
-  
+
 
 private:
   GLuint vao[5], buffer[5], ebo[6], ebo2[6], ebo3[6], ebo4[6], ebo5[6];
