@@ -3,7 +3,7 @@
 
 #include "car.h"
 #include "building.h"
-#include "trafficlight.h"
+#include "trafficLight.h"
 
 using namespace std;
 
@@ -39,8 +39,8 @@ void init()
 
   car[0] = new Car(loc, faceColourLoc, modelLoc, vec4(0, 0, 0, 0), 0, 0, 0.125, 1, 1, 1);
   builds[0] = new building(1, loc, faceColourLoc, modelLoc, vec4(3, 0, 0, 0));
-  //light[0] = new Light(loc, faceColourLoc, modelLoc, vec4(1, 0, 0, 0),
-  //         0, 0, 90, 1, 1, 1);
+  light[0] = new Light(loc, faceColourLoc, modelLoc, vec4(1, 0, 0, 0),
+           0, 0, 90, 1, 1, 1);
   glClearColor( 0.40, 0.40, 0.40, 1.0 ); // gray background
 
   glEnable(GL_DEPTH_TEST);
@@ -136,7 +136,7 @@ void display( void )
     builds[i]->draw(colour);
   }
 
-  // for (int i = 0; i < 4; i++) {
+  // for (int i = 0; i < 1; i++) {
   //   light[i]->draw();
   // }
 
@@ -192,7 +192,7 @@ void arrow(int key, int x, int y) {
 
 // void timer(int val)
 // {
-//   for (int i = 0; i < 4; i++) {
+//   for (int i = 0; i < 1; i++) {
 //     light[i]->next_colour();
 //   }
 //   glutPostRedisplay();
@@ -222,7 +222,7 @@ int main( int argc, char **argv )
   glutDisplayFunc(display);
   glutKeyboardFunc(keyboard);
   glutSpecialFunc(arrow);
-  //glutTimerFunc(3000, timer, 0);
+  // glutTimerFunc(3000, timer, 0);
 
   glutMainLoop();
 
@@ -232,7 +232,7 @@ int main( int argc, char **argv )
   for (int i = 0; i < 1; i++) {
     delete builds[i];
   }
-  // for (int i = 0; i < 2; i++) {
+  // for (int i = 0; i < 1; i++) {
   //   delete light[i];
   // }
   return 0;
