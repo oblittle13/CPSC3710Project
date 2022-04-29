@@ -11,18 +11,18 @@ Car::Car(GLuint vertexLoc, GLuint faceLoc,
 	     GLuint modelLoc, vec4 pos,
 	     GLfloat theta_x, GLfloat theta_y, GLfloat theta_z,
 	     GLfloat scale_x, GLfloat scale_y, GLfloat scale_z, direction facing)
-  : color_index{0}, vertex_loc{vertexLoc}, face_loc{faceLoc},
+  :vertex_loc{vertexLoc}, face_loc{faceLoc},
     model_loc{modelLoc}, theta_x{theta_x}, theta_y{theta_y}, theta_z{theta_z},
     scale_x{scale_x}, scale_y{scale_y}, scale_z{scale_z}, facing{facing}  {
 
         //Defining the verticies which make up the faces of the body of the car
         const GLuint face_recprism[6][4] = {
-        {0,1,2,3},  // bottom
-        {4,5,6,7},  // top
-        {0,1,5,4},  // back bumper
-        {2,3,7,6},  // front bumper
-        {2,6,5,1},  // passenger side
-        {0,4,7,3}   // driver side
+            {0,1,2,3},  // bottom
+            {4,5,6,7},  // top
+            {0,1,5,4},  // back bumper
+            {2,3,7,6},  // front bumper
+            {2,6,5,1},  // passenger side
+            {0,4,7,3}   // driver side
         };
 
         glGenVertexArrays(numobjects, vao);
