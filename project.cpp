@@ -136,9 +136,9 @@ void display( void )
     builds[i]->draw(colour);
   }
 
-  // for (int i = 0; i < 1; i++) {
-  //   light[i]->draw();
-  // }
+  for (int i = 0; i < 1; i++) {
+    light[i]->draw();
+  }
 
   glutSwapBuffers();
 }
@@ -169,11 +169,19 @@ void arrow(int key, int x, int y) {
     break;
 
     case GLUT_KEY_UP:
-    car[0]->updatePos(0.10);
+    if (top == true) {
+      car[0]->updatePos(-0.10);
+    } else {
+      car[0]->updatePos(0.10);
+    }
     break;
 
     case GLUT_KEY_DOWN:
-    car[0]->updatePos(-0.10);
+    if (top == true) {
+      car[0]->updatePos(0.10);
+    } else {
+      car[0]->updatePos(-0.10);
+    }
     break;
 
     case GLUT_KEY_F1:
@@ -190,14 +198,14 @@ void arrow(int key, int x, int y) {
 
 //---------------------------------------------------------------------------
 
-// void timer(int val)
-// {
-//   for (int i = 0; i < 1; i++) {
-//     light[i]->next_colour();
-//   }
-//   glutPostRedisplay();
-//   glutTimerFunc(3000, timer, 0);
-// }
+void timer(int val)
+{
+  for (int i = 0; i < 1; i++) {
+    light[i]->next_colour();
+  }
+  glutPostRedisplay();
+  glutTimerFunc(3000, timer, 0);
+}
 
 //---------------------------------------------------------------------------
 
@@ -222,7 +230,7 @@ int main( int argc, char **argv )
   glutDisplayFunc(display);
   glutKeyboardFunc(keyboard);
   glutSpecialFunc(arrow);
-  // glutTimerFunc(3000, timer, 0);
+  glutTimerFunc(3000, timer, 0);
 
   glutMainLoop();
 
@@ -232,8 +240,8 @@ int main( int argc, char **argv )
   for (int i = 0; i < 1; i++) {
     delete builds[i];
   }
-  // for (int i = 0; i < 1; i++) {
-  //   delete light[i];
-  // }
+  for (int i = 0; i < 1; i++) {
+    delete light[i];
+  }
   return 0;
   }

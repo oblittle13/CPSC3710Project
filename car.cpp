@@ -194,10 +194,10 @@ void Car::draw() const {
 //Update the position of the car
 void Car::updatePos(float move) {
     //if we are facing south or east need to invert the move directions
-    if (facing == south) {
+    if (facing == south || facing == east) {
         move *= -1;
-    } else if (facing == east) {
-        move *= -1;
+    } else {
+        move *= 1;
     }
 
     //If North or South, move in Y, else move in X
