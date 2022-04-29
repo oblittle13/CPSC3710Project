@@ -1,7 +1,7 @@
 CC=g++
 CFLAGS=-Iinclude -std=c++11 -g
 LIBS=-lfreeglut -lglew32 -lopengl32 -lglu32
-LIBS2=-lglut -lGLEW -lGL -lGLU
+# LIBS2=-lglut -lGLEW -lGL -lGLU
 # Default target executed when no arguments are given to make.
 default_target: project
 .PHONY : default_target
