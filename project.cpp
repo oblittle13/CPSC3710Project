@@ -3,6 +3,7 @@
 
 #include "car.h"
 #include "building.h"
+#include "trafficlight.h"
 
 using namespace std;
 
@@ -14,7 +15,7 @@ mat4 model, rotate;
 
 vec4 pos(0.0, 0.0, 0.0, 0.0);
 vec3 scale(1.0, 1.0, 1.0);
-GLint faceColourLoc, modelLoc, viewLoc, projLoc;
+GLuint faceColourLoc, modelLoc, viewLoc, projLoc;
 
 vec4 eye;
 Car *car[1];
@@ -36,10 +37,10 @@ void init()
   // Initialize the vertex position attribute from the vertex shader
   GLuint loc = glGetAttribLocation( program, "vPosition" );
 
-  car[0] = new Car(loc, faceColourLoc, modelLoc, vec4(0, 0, 0, 0), 0, 0, 0.125, 3, 3, 3);
+  car[0] = new Car(loc, faceColourLoc, modelLoc, vec4(0, 0, 0, 0), 0, 0, 0.125, 1, 1, 1);
   builds[0] = new building(1, loc, faceColourLoc, modelLoc, vec4(3, 0, 0, 0));
-  light[0] - new Light(loc, faceColourLoc, modelLoc, vec4(1, 0, 0, 0),
-           0, 0, 90, 1, 1, 1);
+  //light[0] = new Light(loc, faceColourLoc, modelLoc, vec4(1, 0, 0, 0),
+  //         0, 0, 90, 1, 1, 1);
   glClearColor( 0.40, 0.40, 0.40, 1.0 ); // gray background
 
   glEnable(GL_DEPTH_TEST);
@@ -54,13 +55,13 @@ vec4 getEye() {
   vec4 temp;
 
   if (current == north) {
-    temp = vec4(0, -5, 3, 0);
+    temp = vec4(0, -5, 2, 0);
   } else if (current == east) {
-    temp = vec4(5, 0, 3, 0);
+    temp = vec4(5, 0, 2, 0);
   } else if (current == south) {
-    temp = vec4(0, 5, 3, 0);
+    temp = vec4(0, 5, 2, 0);
   } else {
-    temp = vec4(-5, 0, 3, 0);
+    temp = vec4(-5, 0, 2, 0);
   }
 
   return temp;
@@ -87,7 +88,7 @@ void topView() {
   rotate = RotateX(theta_x) * RotateY(theta_y) * RotateZ(theta_z);
   model = Translate(pos) * rotate * Scale(scale);
 
-  eye = car[0]->getCenter() + vec4(0, 0, 5, 0);
+  eye = car[0]->getCenter() + vec4(0, 0, 15, 0);
   vec4 up;
   direction current = car[0]->getFacing();
     if (current == north) {
@@ -135,9 +136,9 @@ void display( void )
     builds[i]->draw(colour);
   }
 
-  for (int i = 0; i < 4; i++) {
-    light[i]->draw();
-  }
+  // for (int i = 0; i < 4; i++) {
+  //   light[i]->draw();
+  // }
 
   glutSwapBuffers();
 }
@@ -149,18 +150,6 @@ void keyboard( unsigned char key, int x, int y )
   switch ( key ) {
   case 033:
     exit( EXIT_SUCCESS );
-    break;
-  case 'a':
-    eye.x -= 0.3;
-    break;
-  case 'd':
-    eye.x += 0.3;
-    break;
-  case 'w':
-    eye.y += 0.3;
-    break;
-  case 's':
-    eye.y -= 0.3;
     break;
   }
   glutPostRedisplay();
@@ -201,14 +190,14 @@ void arrow(int key, int x, int y) {
 
 //---------------------------------------------------------------------------
 
-void timer(int val)
-{
-  for (int i = 0; i < 4; i++) {
-    light[i]->next_colour();
-  }
-  glutPostRedisplay();
-  glutTimerFunc(3000, timer, 0);
-}
+// void timer(int val)
+// {
+//   for (int i = 0; i < 4; i++) {
+//     light[i]->next_colour();
+//   }
+//   glutPostRedisplay();
+//   glutTimerFunc(3000, timer, 0);
+// }
 
 //---------------------------------------------------------------------------
 
@@ -233,7 +222,7 @@ int main( int argc, char **argv )
   glutDisplayFunc(display);
   glutKeyboardFunc(keyboard);
   glutSpecialFunc(arrow);
-  glutTimerFunc(3000, timer, 0);
+  //glutTimerFunc(3000, timer, 0);
 
   glutMainLoop();
 
@@ -243,8 +232,8 @@ int main( int argc, char **argv )
   for (int i = 0; i < 1; i++) {
     delete builds[i];
   }
-  for (int i = 0; i < 2; i++) {
-    delete light[i];
-  }
+  // for (int i = 0; i < 2; i++) {
+  //   delete light[i];
+  // }
   return 0;
   }

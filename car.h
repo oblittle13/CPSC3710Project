@@ -29,7 +29,6 @@ public:
 private:
     GLuint vao[14], buffer[14], ebo[6];
     mat4 model;
-    int color_index;
     GLuint vertex_loc, face_loc, model_loc;
     vec4 pos;
     GLfloat theta_x, theta_y, theta_z, scale_x, scale_y, scale_z;
