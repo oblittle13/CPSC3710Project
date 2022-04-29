@@ -44,7 +44,7 @@ void init()
   builds[1] = new building(4, loc, faceColourLoc, modelLoc, vec4(-3, 0, 0, 0));
   builds[2] = new building(2, loc, faceColourLoc, modelLoc, vec4(3, 5, 0, 0));
   builds[3] = new building(1, loc, faceColourLoc, modelLoc, vec4(-3, 5, 0, 0));
-  builds[4] = new building(4, loc, faceColourLoc, modelLoc, vec4(3, 10, 0, 0));
+  builds[4] = new building(4, loc, faceColourLoc, modelLoc, vec4(3, 10, 0, 0),0, 0, 90);
   builds[5] = new building(3, loc, faceColourLoc, modelLoc, vec4(-3, 10, 0, 0));
 
   //north
@@ -143,17 +143,33 @@ void topView() {
 
 //---------------------------------------------------------------------------
 void drawBuildings() {
-  GLfloat v = 0.75;
-  vec4 colour[4] =
-  { vec4(v,v,v,1),
-  vec4(v,v,v,1),
-  vec4(v,v,v,1),
-  vec4(v,v,v,1)
-  };
+  vec4 build1[3] =
+{ vec4(0.97,0,1,1), vec4(0.5,0,0.9,1), vec4(0.75,0.25,0.35,1),};
+  vec4 build2[3] =
+  { vec4(1,1,1,1), vec4(00,1,1,1), vec4(0.75,0.25,0.35,1),};
+  vec4 build3[3] =
+  { vec4(1,0.8,0.6,1), vec4(1,0,0,1),};
+  vec4 build4[4] =
+  { vec4(0.87,0.8,1,1), vec4(0.85,0,0.85,1), vec4(0,0,1,1),};
+  vec4 build5[4] =
+  { vec4(0.2,0.8,1,1), vec4(0.15,0,0.65,1), vec4(1,0,1,1),};
+  vec4 build6[4] =
+  { vec4(0.3,1,0.2,1), vec4(0.5,0.1,0.25,1), vec4(1,0,1,1),};
 
-  for (int i = 0; i < 23; i++) {
-    builds[i]->draw(colour);
-  }
+
+
+
+  vec4 build[3] =
+{ vec4(0.75,0.75,0.75,1), vec4(0.75,0.75,0.75,1), vec4(0.75,0.75,0.75,1),};
+
+  builds[0]->draw(build1);
+  builds[1]->draw(build2);
+  builds[2]->draw(build3);
+  builds[3]->draw(build4);
+  builds[4]->draw(build4);
+  builds[5]->draw(build5);
+  builds[6]->draw(build6);
+
 }
 
 //---------------------------------------------------------------------------
@@ -168,7 +184,7 @@ void display( void )
     behindView();
   }
    drawBuildings();
-   
+
   for (int i = 0; i < 1; i++) {
     car[i]->draw();
   }
