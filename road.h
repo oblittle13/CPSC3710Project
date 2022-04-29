@@ -11,6 +11,7 @@ class Road {
     ~Road();
 
     void draw() const;
+    void buildModel();
 
     private:
     GLuint vao[19], buffer[19], ebo[1];

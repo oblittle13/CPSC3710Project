@@ -20,7 +20,7 @@ GLuint faceColourLoc, modelLoc, viewLoc, projLoc;
 
 vec4 eye;
 Car *car[1];
-building* builds[23];
+building* builds[24];
 Light* light[10];
 Road *road[1];
 
@@ -89,6 +89,8 @@ void init()
 vec4 getEye() {
   direction current = car[0]->getFacing();
   vec4 temp;
+
+  current = east;
 
   if (current == north) {
     temp = vec4(0, -5, 2, 0);
@@ -186,7 +188,7 @@ void display( void )
   } else {
     behindView();
   }
-   drawBuildings();
+  //drawBuildings();
 
   for (int i = 0; i < 1; i++) {
     car[i]->draw();
@@ -297,7 +299,7 @@ int main( int argc, char **argv )
   for (int i = 0; i < 1; i++) {
     delete car[i];
   }
-  for (int i = 0; i < 1; i++) {
+  for (int i = 0; i < 24; i++) {
     delete builds[i];
   }
   for (int i = 0; i < 1; i++) {

@@ -24,7 +24,7 @@ trafficLight.o: trafficLight.cpp
 road.o: road.cpp
 	$(CC) $(CFLAGS) -c road.cpp
 
-project.o: car.h building.h
+project.o: car.h building.h trafficLight.h road.h
 car.o: car.h
 building.o: building.h
 trafficLight.o: trafficLight.h

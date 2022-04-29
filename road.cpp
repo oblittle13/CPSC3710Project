@@ -144,15 +144,29 @@ face_loc{faceLoc}, model_loc{modelLoc} {
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo[0]);
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, 4*sizeof(GLuint), face[0], GL_STATIC_DRAW);
     }
+
+    buildModel();
 }
 
 //---------------------------------------------------------------------------
+
+
+//Builds the model matrix
+void Road::buildModel() {
+    //Building the model for our road
+    GLfloat x = 1;
+    GLfloat y = 1;
+    GLfloat z = 1;
+    model = Scale(x,y,z);
+}
+
+//---------------------------------------------------------------------------
+
 
 //Drawing the road
 void Road::draw() const{
 
     //Drawing the body, pillarPF, pillarDF, roof, pillarPR, pillarDR, and windows
-    glUniformMatrix4fv(model_loc, 1, GL_TRUE, model);
     for (int i = 0; i < numobjects; i++) {
         glUniformMatrix4fv(model_loc, 1, GL_TRUE, model);
         glBindVertexArray(vao[i]);
