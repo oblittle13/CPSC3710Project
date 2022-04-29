@@ -7,7 +7,7 @@ default_target: project
 .PHONY : default_target
 
 project: project.o car.o building.o trafficLight.o road.o InitShader.o
-	$(CC) $(CFLAGS) -o $@ $^ $(LIBS)
+	$(CC) $(CFLAGS) -o $@ $^ $(LIBS2)
 
 project.o: project.cpp
 	$(CC) $(CFLAGS) -c project.cpp
@@ -24,7 +24,7 @@ trafficLight.o: trafficLight.cpp
 road.o: road.cpp
 	$(CC) $(CFLAGS) -c road.cpp
 
-project.o: car.h building.h
+project.o: car.h building.h trafficLight.h road.h
 car.o: car.h
 building.o: building.h
 trafficLight.o: trafficLight.h

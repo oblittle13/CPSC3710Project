@@ -20,7 +20,7 @@ GLuint faceColourLoc, modelLoc, viewLoc, projLoc;
 
 vec4 eye;
 Car *car[1];
-building* builds[23];
+building* builds[24];
 Light* light[10];
 Road *road[1];
 
