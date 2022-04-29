@@ -84,8 +84,8 @@ void Light::draw() const
 
   vec4 lightColor[3] =
     { vec4(1,0,0,1),
-      vec4(1,1,0,1),
-      vec4(0,1,0,1)
+      vec4(0,1,0,1),
+      vec4(1,1,0,1)
     };
   glUniform4fv(face_loc, 1, lightColor[color_index]);
   glBindVertexArray(vao[1]);

@@ -16,10 +16,10 @@ car.o: car.cpp
 	$(CC) $(CFLAGS) -c car.cpp
 
 building.o: building.cpp
-		$(CC) $(CFLAGS) -c building.cpp
+	$(CC) $(CFLAGS) -c building.cpp
 
 trafficLight.o: trafficLight.cpp
-				$(CC) $(CFLAGS) -c trafficLight.cpp
+	$(CC) $(CFLAGS) -c trafficLight.cpp
 
 project.o: car.h building.h
 car.o: car.h
