@@ -6,7 +6,7 @@ LIBS2=-lglut -lGLEW -lGL -lGLU
 default_target: project
 .PHONY : default_target
 
-project: project.o car.o building.o trafficLight.o InitShader.o
+project: project.o car.o building.o trafficLight.o road.o InitShader.o
 	$(CC) $(CFLAGS) -o $@ $^ $(LIBS)
 
 project.o: project.cpp
@@ -21,10 +21,14 @@ building.o: building.cpp
 trafficLight.o: trafficLight.cpp
 	$(CC) $(CFLAGS) -c trafficLight.cpp
 
+road.o: road.cpp
+	$(CC) $(CFLAGS) -c road.cpp
+
 project.o: car.h building.h
 car.o: car.h
 building.o: building.h
 trafficLight.o: trafficLight.h
+road.o: road.h
 
 InitShader.o: common/InitShader.cc
 	$(CC) $(CFLAGS) -c $^

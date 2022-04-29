@@ -4,6 +4,7 @@
 #include "car.h"
 #include "building.h"
 #include "trafficLight.h"
+#include "road.h"
 
 using namespace std;
 
@@ -21,6 +22,7 @@ vec4 eye;
 Car *car[1];
 building* builds[20];
 Light* light[10];
+Road *road[1];
 
 bool top = false;
 
@@ -41,6 +43,7 @@ void init()
   builds[0] = new building(1, loc, faceColourLoc, modelLoc, vec4(3, 0, 0, 0));
   light[0] = new Light(loc, faceColourLoc, modelLoc, vec4(1, 0, 0, 0),
            0, 0, 90, 1, 1, 1);
+  road[0] = new Road(loc, faceColourLoc, modelLoc);
   glClearColor( 0.40, 0.40, 0.40, 1.0 ); // gray background
 
   glEnable(GL_DEPTH_TEST);
@@ -140,6 +143,8 @@ void display( void )
     light[i]->draw();
   }
 
+  road[0]->draw();
+
   glutSwapBuffers();
 }
 
@@ -170,17 +175,17 @@ void arrow(int key, int x, int y) {
 
     case GLUT_KEY_UP:
     if (top == true) {
-      car[0]->updatePos(-0.10);
+      car[0]->updatePos(-1.10);
     } else {
-      car[0]->updatePos(0.10);
+      car[0]->updatePos(1.10);
     }
     break;
 
     case GLUT_KEY_DOWN:
     if (top == true) {
-      car[0]->updatePos(0.10);
+      car[0]->updatePos(1.10);
     } else {
-      car[0]->updatePos(-0.10);
+      car[0]->updatePos(-1.10);
     }
     break;
 
@@ -243,5 +248,8 @@ int main( int argc, char **argv )
   for (int i = 0; i < 1; i++) {
     delete light[i];
   }
+
+  delete road[0];
+
   return 0;
   }
