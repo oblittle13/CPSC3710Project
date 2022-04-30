@@ -378,7 +378,6 @@ void building::draw(vec4 colour[]) const
 
   glBindVertexArray(vao[2]);
   for (int i = 0; i <6; i++) {
-        GLfloat v = 0.75 * (i+1)/6.0;
         if (TYPE == 4 ){
         glUniform4fv(face_loc, 1, vec4(0,0,0,1));
         } else {

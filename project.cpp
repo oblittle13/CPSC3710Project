@@ -21,8 +21,8 @@ GLuint faceColourLoc, modelLoc, viewLoc, projLoc;
 vec4 eye;
 Car *car[1];
 building* builds[24];
-Light* light[10];
-Road *road[4];
+Light* light[4];
+Road *road[1];
 
 bool top = false;
 
@@ -81,7 +81,6 @@ void init()
   builds[17] = new building(2, loc, faceColourLoc, modelLoc, vec4(-11, 13, 0, 0)
   ,0,0,0, 1.06, 1.07, 1);
 
-  
 
   //north west to north east
   builds[18] = new building(3, loc, faceColourLoc, modelLoc, vec4(-6, 21.3, 0, 0)
