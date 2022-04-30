@@ -275,7 +275,6 @@ void Car::turn(float deg) {
 //---------------------------------------------------------------------------
 
 vec4 Car::getCenter() {
-    cout << center << endl;
     return center;
 }
 
