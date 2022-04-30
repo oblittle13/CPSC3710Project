@@ -361,7 +361,6 @@ void building::draw(vec4 colour[]) const
 
   glBindVertexArray(vao[0]);
   for (int i = 0; i < 6; i++) {
-    GLfloat v = 0.75 * (i+1)/6.0;
     glUniform4fv(face_loc, 1, colour[0]);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo[i]);
     glDrawElements(GL_TRIANGLE_FAN, 4, GL_UNSIGNED_INT, nullptr);
@@ -378,7 +377,6 @@ void building::draw(vec4 colour[]) const
 
   glBindVertexArray(vao[2]);
   for (int i = 0; i <6; i++) {
-        GLfloat v = 0.75 * (i+1)/6.0;
         if (TYPE == 4 ){
         glUniform4fv(face_loc, 1, vec4(0,0,0,1));
         } else {
