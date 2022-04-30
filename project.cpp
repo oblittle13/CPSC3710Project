@@ -23,8 +23,10 @@ float build_colour[484*3];
 vec4 eye;
 Car *car[1];
 building* builds[484];
-Light* light[52];
+Light* light[324];
 Road *road[4];
+
+int count;
 
 bool top = false;
 bool first_display = true;
@@ -47,7 +49,7 @@ void init()
 
   //This "algorith" creates the buildings with different coordinates, but makes sure that they don't end up on the road or out of bounds
   int type = -1;
-  double Xchange = 61.5;
+  double Xchange = -61.5;
   double Ychange = 61.5;
   bool first = true;
   for (int i = 0; i < 484; i++) {
@@ -59,27 +61,45 @@ void init()
       Ychange -= 6.5;
     }
 
+    cout << Xchange << endl;
+
+    if (Xchange > 64) {
+      break;
+    }
+
     if(first) {
       first = false;
     } else {
       first = true;
     }
 
-    builds[i] = new building(type * 3 % 4, loc, faceColourLoc, modelLoc, vec4(Xchange, Ychange, 0, 0), 0, 0 ,0, 2, 2, 2);
+    builds[i] = new building(type * 3 % 4, loc, faceColourLoc, modelLoc, vec4(Xchange, Ychange, 0, 0), 0, 0 ,0, 1, 1, 1);
 
-    if (i % 18 == 0) {
+    if (Ychange < -55) {
       Ychange = 61.5;
-      Xchange -= 6.5;
+      Xchange += 6.5;
     }
+
+    count++;
 
   }
 
+  //Using the "algorithm" to place the lights
+  double positionX = -53.5;
+  double positionY = 53.5;
+  for (int i = 0; i < 81; i++) {
+    light[0 + 4 * i] = new Light(loc, faceColourLoc, modelLoc, vec4(positionX, positionY, 0, 0), 0, 0, -90, 1, 1, 1);
+    light[1 + 4 * i] = new Light(loc, faceColourLoc, modelLoc, vec4(positionX, positionY -3, 0, 0), 0, 0, 0, 1, 1, 1);
+    light[2 + 4 * i] = new Light(loc, faceColourLoc, modelLoc, vec4(positionX + 3, positionY, 0, 0), 0, 0, 180, 1, 1, 1);
+    light[3 + 4 * i] = new Light(loc, faceColourLoc, modelLoc, vec4(positionX + 3, positionY -3, 0, 0), 0, 0, 90, 1, 1, 1);
 
-  //for loop to build the lights
-    light[0] = new Light(loc, faceColourLoc, modelLoc, vec4(1.5, -1.5, 0, 0), 0, 0, 0, 1, 1, 1);
-    light[1] = new Light(loc, faceColourLoc, modelLoc, vec4(-1.5, -1.5, 0, 0), 0, 0, -90, 1, 1, 1);
-    light[2] = new Light(loc, faceColourLoc, modelLoc, vec4(1.5, 1.5, 0, 0), 0, 0, 180, 1, 1, 1);
-    light[3] = new Light(loc, faceColourLoc, modelLoc, vec4(-1.5, 1.5, 0, 0), 0, 0, 90, 1, 1, 1);
+    positionX += 13;
+
+    if (i % 9 == 0 && i != 0) {
+      positionX = -53.5;
+      positionY -= 13;
+    }
+  }
 
   road[0] = new Road(loc, faceColourLoc, modelLoc);
   glClearColor( 0.40, 0.40, 0.40, 1.0 ); // gray background
@@ -202,15 +222,15 @@ void topView() {
 //---------------------------------------------------------------------------
 
 void drawBuildings() {
-  srand(time(nullptr));
-  for (int i = 0; i < 484; i++) {
+  for (int i = 0; i < count; i++) {
     //You may be asking yourself, what on earth is this? Well its the random numbers of array indices
     //my computer just doesnt like at all, so we skip them -- O'Brien Little
     if (i == 9 || i == 10 || i == 24 || i == 54 || i == 111 || i == 113 || i == 114
-    || i == 230 || i == 232 || i == 234 || i == 264 || i == 392 || i == 406 || i == 464
+    || i == 230 || i == 232 || i == 234 || i == 264 || i == 360 || i == 361 || i == 362 || i == 392 || i == 406 || i == 464
     || i == 466 || i == 468 || i == 470 || i == 472) {
       continue;
     }
+
     float a = build_colour[0 + i*3];
     float b = build_colour[2 + i*3];
     float c = build_colour[3 + i*3];
@@ -230,7 +250,7 @@ void genColours() {
   constexpr int FLOAT_MAX = 1;
 
   srand(time(nullptr));
-    for (int i = 0; i < 484; i++) {
+    for (int i = 0; i < count; i++) {
     //You may be asking yourself, what on earth is this? Well its the random numbers of array indices
     //my computer just doesnt like at all, so we skip them -- O'Brien Little
     if (i == 9 || i == 10 || i == 24 || i == 54 || i == 111 || i == 113 || i == 114
@@ -272,7 +292,7 @@ void display( void )
     car[i]->draw();
   }
 
-  for (int i = 0; i < 4; i++) {
+  for (int i = 0; i < 324; i++) {
     light[i]->draw();
   }
 
@@ -309,32 +329,32 @@ void arrow(int key, int x, int y) {
 
     case GLUT_KEY_UP:
     if (top == true) {
-      car[0]->updatePos(-5);
+      car[0]->updatePos(-1);
       possible = getCollision();
       if (possible == false) {
-        car[0]->updatePos(5);
+        car[0]->updatePos(1);
       }
     } else {
-      car[0]->updatePos(5);
+      car[0]->updatePos(1);
       possible = getCollision();
       if (possible == false) {
-        car[0]->updatePos(-5);
+        car[0]->updatePos(-1);
       }
     }
     break;
 
     case GLUT_KEY_DOWN:
     if (top == true) {
-      car[0]->updatePos(5);
+      car[0]->updatePos(1);
       possible = getCollision();
       if (possible == false) {
-        car[0]->updatePos(-5);
+        car[0]->updatePos(-1);
       }
     } else {
-      car[0]->updatePos(-5);
+      car[0]->updatePos(-1);
       possible = getCollision();
       if (possible == false) {
-        car[0]->updatePos(5);
+        car[0]->updatePos(1);
       }
     }
     break;
@@ -355,7 +375,7 @@ void arrow(int key, int x, int y) {
 
 void timer(int val)
 {
-  for (int i = 0; i < 4; i++) {
+  for (int i = 0; i < 324; i++) {
     light[i]->next_colour();
   }
   glutPostRedisplay();
