@@ -259,31 +259,78 @@ void drawBuildings() {
   vec4 build23[4] =
   { vec4(0.44,0.59,0.87,1), vec4(0.78,0.52,0.36,1), vec4(0.71,0.4,0.51,1),};
 
-
+  int n = 1;
   builds[0]->draw(build1);
+  cout << n << endl;
+  n++;
   builds[1]->draw(build2);
+  cout << n << endl;
+  n++;
   builds[2]->draw(build3);
+  cout << n << endl;
+  n++;
   builds[3]->draw(build4);
+  cout << n << endl;
+  n++;
   builds[4]->draw(build4);
+  cout << n << endl;
+  n++;
   builds[5]->draw(build5);
-  builds[6]->draw(build6);
+  cout << n << endl;
+  n++;
+  //builds[6]->draw(build6);
+  //cout << n << endl;
+  //n++;
   builds[7]->draw(build7);
+  cout << n << endl;
+  n++;
   builds[8]->draw(build8);
+  cout << n << endl;
+  n++;
   builds[9]->draw(build9);
+  cout << n << endl;
+  n++;
   builds[10]->draw(build10);
+  cout << n << endl;
+  n++;
   builds[11]->draw(build11);
+  cout << n << endl;
+  n++;
   builds[12]->draw(build12);
+  cout << n << endl;
+  n++;
   builds[13]->draw(build13);
+  cout << n << endl;
+  n++;
   builds[14]->draw(build14);
+  cout << n << endl;
+  n++;
   builds[15]->draw(build15);
-  builds[16]->draw(build16);
-  builds[17]->draw(build17);
+  cout << n << endl;
+  n++;
+  // builds[16]->draw(build16);
+  // cout << n << endl;
+  // n++;
+  // builds[17]->draw(build17);
+  // cout << n << endl;
+  // n++;
   builds[18]->draw(build18);
+  cout << n << endl;
+  n++;
   builds[19]->draw(build19);
+  cout << n << endl;
+  n++;
   builds[20]->draw(build20);
+  cout << n << endl;
+  n++;
   builds[21]->draw(build21);
+  cout << n << endl;
+  n++;
   builds[22]->draw(build22);
+  cout << n << endl;
+  n++;
   builds[23]->draw(build23);
+
 }
 
 //---------------------------------------------------------------------------
@@ -378,8 +425,6 @@ void arrow(int key, int x, int y) {
     top = true;
     break;
   }
-
-  std::cout << " Poissble: " << possible << std::endl;
 
   glutPostRedisplay();
 }
