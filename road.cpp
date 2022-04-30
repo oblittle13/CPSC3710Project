@@ -56,7 +56,7 @@ face_loc{faceLoc}, model_loc{modelLoc} {
        {
            vec4(12, -64, 0.01 , 1), vec4(14, -64, 0.01, 1),
            vec4(14, 64, 0.01, 1), vec4(12, 64, 0.01, 1),
-       },
+       },*/
 
        //Left most -6 - verticle
        {
