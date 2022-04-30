@@ -42,14 +42,17 @@ void init()
   car[0] = new Car(loc, faceColourLoc, modelLoc, vec4(0, 0, 0, 0), 0, 0, 0.125, 1, 1, 1);
 
   //south
-  builds[0] = new building(3, loc, faceColourLoc, modelLoc, vec4(3, -3, 0, 0));
+  builds[0] = new building(3, loc, faceColourLoc, modelLoc, vec4(2.8, -3, 0, 0)
+  ,0,0,0, 0.5,0.5,0.5);
   builds[1] = new building(4, loc, faceColourLoc, modelLoc, vec4(-2, 0, 0, 0)
-  ,0 ,0, 90);
+  ,0 ,0, 90, 0.8,0.9,0.8);
   builds[2] = new building(2, loc, faceColourLoc, modelLoc, vec4(3, 2, 0, 0));
-  builds[3] = new building(1, loc, faceColourLoc, modelLoc, vec4(-2, 5, 0, 0));
+  builds[3] = new building(1, loc, faceColourLoc, modelLoc, vec4(-2, 5, 0, 0)
+  ,0,0,90,0.8,0.9,0.7);
   builds[4] = new building(4, loc, faceColourLoc, modelLoc, vec4(3, 7, 0, 0)
   ,0, 0, 90);
-  builds[5] = new building(3, loc, faceColourLoc, modelLoc, vec4(-2, 10, 0, 0));
+  builds[5] = new building(3, loc, faceColourLoc, modelLoc, vec4(-2, 10, 0, 0)
+  ,0, 0, 90);
 
   //north
   builds[6] = new building(2, loc, faceColourLoc, modelLoc, vec4(-2, 23, 0, 0)
@@ -64,32 +67,45 @@ void init()
   ,0, 0, 90, 1, 1.2, 1);
   builds[11] = new building(4, loc, faceColourLoc, modelLoc, vec4(3, 33, 0, 0));
 
-  //south West - south east
+  //south West
   builds[12] = new building(2, loc, faceColourLoc, modelLoc, vec4(5, 13, 0, 0)
-  ,0,0,90);
-  builds[13] = new building(1, loc, faceColourLoc, modelLoc, vec4(-5, 13, 0, 0));
-  builds[14] = new building(3, loc, faceColourLoc, modelLoc, vec4(9, 13, 0, 0));
-  builds[15] = new building(4, loc, faceColourLoc, modelLoc, vec4(-7, 13, 0, 0));
-  builds[16] = new building(1, loc, faceColourLoc, modelLoc, vec4(12, 13, 0, 0));
-  builds[17] = new building(2, loc, faceColourLoc, modelLoc, vec4(-11, 13, 0, 0));
+  ,0,0,90, 1.2, 0.8, 1.1);
+  builds[13] = new building(1, loc, faceColourLoc, modelLoc, vec4(-5, 13, 0, 0)
+  ,0,0,0, 1.3, 1.1, 0.7);
+  builds[14] = new building(3, loc, faceColourLoc, modelLoc, vec4(9, 13, 0, 0)
+  ,0,0,0, 0.5, 0.9, 1.4);
+  builds[15] = new building(4, loc, faceColourLoc, modelLoc, vec4(-8, 13, 0, 0)
+  ,0,0,0, 0.5, 1.5, 0.8);
+  builds[16] = new building(1, loc, faceColourLoc, modelLoc, vec4(12, 13, 0, 0)
+  ,0,0,0, 0.4, 0.6, 2);
+  builds[17] = new building(2, loc, faceColourLoc, modelLoc, vec4(-11, 13, 0, 0)
+  ,0,0,0, 1.06, 1.07, 1);
+
+  
 
   //north west to north east
-  builds[18] = new building(3, loc, faceColourLoc, modelLoc, vec4(-6, 21, 0, 0));
-  builds[19] = new building(4, loc, faceColourLoc, modelLoc, vec4(5, 21, 0, 0));
-  builds[20] = new building(1, loc, faceColourLoc, modelLoc, vec4(-9, 21, 0, 0));
-  builds[21] = new building(2, loc, faceColourLoc, modelLoc, vec4(9, 21, 0, 0));
-  builds[22] = new building(4, loc, faceColourLoc, modelLoc, vec4(-13, 21, 0, 0));
-  builds[23] = new building(3, loc, faceColourLoc, modelLoc, vec4(12, 21, 0, 0));
+  builds[18] = new building(3, loc, faceColourLoc, modelLoc, vec4(-6, 21.3, 0, 0)
+  ,0,0,0, 1.4, 1.3, 1);
+  builds[19] = new building(4, loc, faceColourLoc, modelLoc, vec4(5, 21, 0, 0)
+  ,0,0,0, 1, 0.5, 0.7);
+  builds[20] = new building(1, loc, faceColourLoc, modelLoc, vec4(-9, 21, 0, 0)
+  ,0,0,0, 1.2, 1.1, 0.9);
+  builds[21] = new building(2, loc, faceColourLoc, modelLoc, vec4(9, 21, 0, 0)
+  ,0,0,0, 1.3, 1, 0.7);
+  builds[22] = new building(4, loc, faceColourLoc, modelLoc, vec4(-13, 21, 0, 0)
+  ,0,0,0, 1.2, 0.8, 0.7);
+  builds[23] = new building(3, loc, faceColourLoc, modelLoc, vec4(12, 21, 0, 0)
+  ,0,0,0, 0.8, 0.8, 0.9);
 
 
   light[0] = new Light(loc, faceColourLoc, modelLoc, vec4(2.8, 21, 0, 0),
-           0, 0, 0, 1, 1, 1);
+           0, 0, 0, 0.5, 0.5, 0.5);
   light[1] = new Light(loc, faceColourLoc, modelLoc, vec4(2.8, 14.5, 0, 0),
-           0, 0, -90, 1, 1, 1);
+           0, 0, -90, 0.5, 0.5, 0.5);
   light[2] = new Light(loc, faceColourLoc, modelLoc, vec4(-1.9, 14.5, 0, 0),
-           0, 0, 180, 1, 1, 1);
+           0, 0, 180, 0.5, 0.5, 0.5);
   light[3] = new Light(loc, faceColourLoc, modelLoc, vec4(-1.9, 21, 0, 0),
-            0, 0, 90, 1, 1, 1);
+            0, 0, 90, 0.5, 0.5, 0.5);
 
   road[0] = new Road(loc, faceColourLoc, modelLoc);
   glClearColor( 0.40, 0.40, 0.40, 1.0 ); // gray background
