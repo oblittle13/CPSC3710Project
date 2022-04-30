@@ -3,7 +3,7 @@
 //---------------------------------------------------------------------------
 
 //Constructor for the road object
-Road::Road(GLuint vertexLoc, GLuint faceLoc, GLuint modelLoc) : vertex_loc{vertexLoc}, 
+Road::Road(GLuint vertexLoc, GLuint faceLoc, GLuint modelLoc) : vertex_loc{vertexLoc},
 face_loc{faceLoc}, model_loc{modelLoc} {
 
     glGenVertexArrays(numobjects, vao);
@@ -21,17 +21,33 @@ face_loc{faceLoc}, model_loc{modelLoc} {
            vec4(64, 64, 0, 1), vec4(-64, 64, 0, 1),
        },
 
+        //vertical road
+        {
+            vec4(-1, -5, 0.01 , 1), vec4(2, -5, 0.01, 1),
+            vec4(2, 50, 0.01, 1), vec4(-1, 50, 0.01, 1),
+        },
+
+        //horizontal road
+        {
+            vec4(-20, 15, 0.01 , 1), vec4(20, 15, 0.01, 1),
+            vec4(20, 20, 0.01, 1), vec4(-20, 20, 0.01, 1),
+        },
+
+
+
+/*
        //Left most - verticle
        {
-           vec4(-53, -64, 0.01 , 1), vec4(-51, -64, 0.01, 1),
-           vec4(-51, 64, 0.01, 1), vec4(-53, 64, 0.01, 1),
+           vec4(-1, -2, 0.01 , 1), vec4(-0.85, -2, 0.01, 1),
+           vec4(-0.85, 30, 0.01, 1), vec4(-1, 30, 0.01, 1),
        },
+
 
        //Left most -1 - verticle
        {
            vec4(-40, -64, 0.01 , 1), vec4(-38, -64, 0.01, 1),
            vec4(-38, 64, 0.01, 1), vec4(-40, 64, 0.01, 1),
-       },
+       },*/
 
        //Left most -2 - verticle
        {
@@ -129,6 +145,7 @@ face_loc{faceLoc}, model_loc{modelLoc} {
            vec4(64, 53, 0.01, 1), vec4(-64, 51, 0.01, 1),
        },
    };
+   glGenBuffers(19, ebo);
 
    //Adding the vertices of the roads into the roadarea vector
    for (int i = 1; i < numobjects; i++) {
@@ -145,8 +162,7 @@ face_loc{faceLoc}, model_loc{modelLoc} {
         glVertexAttribPointer(vertex_loc, 4, GL_FLOAT, GL_FALSE, 0,
     	BUFFER_OFFSET(0));
 
-        glGenBuffers(1, ebo);
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo[0]);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo[i]);
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, 4*sizeof(GLuint), face[0], GL_STATIC_DRAW);
     }
 }
@@ -163,10 +179,10 @@ void Road::draw() const{
         glBindVertexArray(vao[i]);
         //Grass -- green in the city blocks, black for the road
         if (i == 0) {
-            glUniform4fv(face_loc, 1, vec4(0,1,0,1));
+            glUniform4fv(face_loc, 1, vec4(0.45,0.45,0.45,1));
         } else {
             glUniform4fv(face_loc, 1, vec4(0,0,0,1));
-        } 
+        }
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo[0]);
             glDrawElements(GL_TRIANGLE_FAN, 4, GL_UNSIGNED_INT, nullptr);
     }
