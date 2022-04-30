@@ -86,11 +86,37 @@ void init()
 
 //----------------------------------------------------------------------------
 
+bool getCollision() {
+  float currentX, currentY, currentZ;
+  vec4 currentarray[8];
+  for (int i = 0; i < 8; i++) {
+    vec4 current = *car[0]->getHitBox()[i];
+    currentX = current.x;
+    currentY = current.y;
+    currentZ = current.z;
+
+    for (int i2 = 0; i2 < road[0]->roadmap().size(); i2++) {
+      if (currentX == road[0]->roadmap().at(i2).x) {
+        std::cout << "CurrentX: " << currentX << " vs. roadX: " << road[0]->roadmap().at(i2).x << std::endl;
+        return false;
+      } else if ((currentY == road[0]->roadmap().at(i2).y)) {
+        std::cout << "CurrentX: " << currentY << " vs. roadY: " << road[0]->roadmap().at(i2).y << std::endl;
+        return false;
+    } else if ((currentZ == road[0]->roadmap().at(i2).z)) {
+      std::cout << "CurrentX: " << currentZ << " vs. roadZ: " << road[0]->roadmap().at(i2).z << std::endl;
+      return false;
+    }
+    }
+  }
+
+  return true;
+}
+
+//----------------------------------------------------------------------------
+
 vec4 getEye() {
   direction current = car[0]->getFacing();
   vec4 temp;
-
-  current = east;
 
   if (current == north) {
     temp = vec4(0, -5, 2, 0);
@@ -105,6 +131,22 @@ vec4 getEye() {
   return temp;
 }
 
+//---------------------------------------------------------------------------
+
+mat4 get_projection(mat4 modelview) {
+  GLfloat z1 = 1e10, z2 = -1e10;
+
+  for (int i = 0; i < 8; i++) {
+    auto p = modelview * *car[0]->getHitBox();
+    z1 = min(z1, -p.z);
+    z2 = max(z2, -p.z);
+  }
+
+  GLfloat close = z1 - 0.01, away = z2 + 10.0;
+
+  return Perspective(90, 1.0, close, away);
+}
+
 //----------------------------------------------------------------------------
 
 void behindView() {
@@ -114,8 +156,11 @@ void behindView() {
   eye = car[0]->getCenter() + getEye();
   vec4 up(0,0,1,0);
   mat4 view = LookAt(eye, car[0]->getCenter(), up);
+  mat4 modelView = model * view;
   mat4 proj = Ortho(-5, 5, -5, 5, -1, 100);
+  //mat4 proj = get_projection(modelView);
 
+  glUniformMatrix4fv(modelLoc, 1, GL_TRUE, model);
   glUniformMatrix4fv(viewLoc, 1, GL_TRUE, view);
   glUniformMatrix4fv(projLoc, 1, GL_TRUE, proj);
 }
@@ -140,13 +185,17 @@ void topView() {
   }
 
   mat4 view = LookAt(eye, car[0]->getCenter(), up);
+  mat4 modelView = model * view;
   mat4 proj = Ortho(-5, 5, -5, 5, -1, 100);
+  //mat4 proj = get_projection(modelView);
 
+  glUniformMatrix4fv(modelLoc, 1, GL_TRUE, model);
   glUniformMatrix4fv(viewLoc, 1, GL_TRUE, view);
   glUniformMatrix4fv(projLoc, 1, GL_TRUE, proj);
 }
 
 //---------------------------------------------------------------------------
+
 void drawBuildings() {
   vec4 build1[3] =
 { vec4(0.97,0,1,1), vec4(0.5,0,0.9,1), vec4(0.75,0.25,0.35,1),};
@@ -173,7 +222,7 @@ void drawBuildings() {
   builds[3]->draw(build4);
   builds[4]->draw(build4);
   builds[5]->draw(build5);
-  builds[6]->draw(build6);
+  builds[7]->draw(build6);
 
 }
 
@@ -188,7 +237,7 @@ void display( void )
   } else {
     behindView();
   }
-  //drawBuildings();
+  drawBuildings();
 
   for (int i = 0; i < 1; i++) {
     car[i]->draw();
@@ -221,6 +270,7 @@ void keyboard( unsigned char key, int x, int y )
 
 //Movement function for the car and view swap
 void arrow(int key, int x, int y) {
+  bool possible;
   switch (key) {
     case GLUT_KEY_LEFT:
     car[0]->turn(90);
@@ -233,16 +283,32 @@ void arrow(int key, int x, int y) {
     case GLUT_KEY_UP:
     if (top == true) {
       car[0]->updatePos(-1.10);
+      possible = getCollision();
+      if (possible == false) {
+        car[0]->updatePos(1.10);
+      }
     } else {
       car[0]->updatePos(1.10);
+      possible = getCollision();
+      if (possible == false) {
+        car[0]->updatePos(-1.10);
+      }
     }
     break;
 
     case GLUT_KEY_DOWN:
     if (top == true) {
       car[0]->updatePos(1.10);
+      possible = getCollision();
+      if (possible == false) {
+        car[0]->updatePos(-1.10);
+      }
     } else {
       car[0]->updatePos(-1.10);
+      possible = getCollision();
+      if (possible == false) {
+        car[0]->updatePos(1.10);
+      }
     }
     break;
 
@@ -254,6 +320,8 @@ void arrow(int key, int x, int y) {
     top = true;
     break;
   }
+
+  std::cout << " Poissble: " << possible << std::endl;
 
   glutPostRedisplay();
 }

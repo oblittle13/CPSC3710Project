@@ -1,7 +1,5 @@
 #include "road.h"
 
-const int numobjects = 19;
-
 //---------------------------------------------------------------------------
 
 //Constructor for the road object
@@ -132,6 +130,13 @@ face_loc{faceLoc}, model_loc{modelLoc} {
        },
    };
 
+   //Adding the vertices of the roads into the roadarea vector
+   for (int i = 1; i < numobjects; i++) {
+       for (int i2 = 0; i2 < 4; i2++) {
+           roadarea.push_back(objects[i][i2]);
+       }
+   }
+
     for (int i = 0; i < numobjects; i++) {
         glBindVertexArray(vao[i]);
         glBindBuffer(GL_ARRAY_BUFFER, buffer[i]);
@@ -174,4 +179,11 @@ Road::~Road() {
     glDeleteVertexArrays(numobjects, vao);
     glDeleteBuffers(numobjects, buffer);
     glDeleteBuffers(6, ebo);
+}
+
+//---------------------------------------------------------------------------
+
+//Returns all verticies of the roads
+vector<vec4> Road::roadmap() {
+    return roadarea;
 }

@@ -203,7 +203,7 @@ void Car::draw() const {
             //If the object is part of the window group, make it black,
             //else make is varing shades of red
             if (i >= 6) {
-                glUniform4fv(face_loc, 1, vec4(0,0,0,0.15));
+                glUniform4fv(face_loc, 1, vec4(0,0,0,1));
             } else {
                 glUniform4fv(face_loc, 1, vec4(1,v,v,1)); 
             }
@@ -282,6 +282,24 @@ vec4 Car::getCenter() {
 
 direction Car::getFacing() {
     return facing;
+}
+
+//----------------------------------------------------------------------------
+
+vec4* Car::getHitBox() {
+    static vec4 hitbox[8] = {
+        vec4(-0.5, -1.0, -0.125, 1.0), vec4(0.5, -1.0, -0.125, 1.0),
+        vec4(0.5, 0.75, -0.125, 1.0), vec4(-0.5, 0.75, -0.125, 1.0),
+        vec4(-0.5, -1.0, 0.5, 1.0), vec4(0.5, -1.0, 0.5, 1.0),
+        vec4(0.5, 0.75, 0.5, 1.0), vec4(-0.5, 0.75, 0.5, 1.0)
+    };
+
+    //multiply the model onto the hitbox
+    for (int i = 0; i < 8; i++) {
+        hitbox[i] = model * hitbox[i];
+    }
+
+    return hitbox;
 }
 
 //----------------------------------------------------------------------------
