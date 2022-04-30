@@ -2,7 +2,7 @@
 
 #include <cmath>
 
-const int numobjects = 15;
+const int numobjects = 14;
 
 //---------------------------------------------------------------------------
 
@@ -29,11 +29,11 @@ Car::Car(GLuint vertexLoc, GLuint faceLoc,
         glGenBuffers(numobjects, buffer);
 
         //Creating a way to store each set of vertices for rectangular objects
-        const vec4 recobjs[numobjects-4][8] = {
+        const vec4 recobjs[numobjects][8] = {
             //body -- 1
             {
-                vec4(-0.5, -1.0, 0, 1.0), vec4(0.5, -1.0, 0, 1.0),
-                vec4(0.5, 0.75, 0, 1.0), vec4(-0.5, 0.75, 0, 1.0),
+                vec4(-0.5, -1.0, 0.0, 1.0), vec4(0.5, -1.0, 0.0, 1.0),
+                vec4(0.5, 0.75, 0.0, 1.0), vec4(-0.5, 0.75, 0.0, 1.0),
                 vec4(-0.5, -1.0, 0.25, 1.0), vec4(0.5, -1.0, 0.25, 1.0),
                 vec4(0.5, 0.75, 0.25, 1.0), vec4(-0.5, 0.75, 0.25, 1.0)
             }, 
@@ -109,16 +109,45 @@ Car::Car(GLuint vertexLoc, GLuint faceLoc,
                 vec4(0.40, 0.25, 0.45, 1.0), vec4(0.50, 0.25, 0.45, 1.0),
                 vec4(0.50, -0.45, 0.45, 1.0), vec4(0.40, -0.45, 0.45, 1.0),
             },
+
+            //DriverRear Wheel -- 11
+            {
+                vec4(-0.625, -0.625, -0.125, 1.0), vec4(-0.375, -0.625, -0.125, 1.0),
+                vec4(-0.375, -0.375, -0.125, 1.0), vec4(-0.625, -0.375, -0.125, 1.0),
+                vec4(-0.625, -0.625, 0.125, 1.0), vec4(-0.375, -0.625, 0.125, 1.0),
+                vec4(-0.375, -0.375, 0.125, 1.0), vec4(-0.625, -0.375, 0.125, 1.0),
+            },
+
+            //PassengerRear Wheel -- 12
+            {
+                vec4(0.625, -0.625, -0.125, 1.0), vec4(0.375, -0.625, -0.125, 1.0),
+                vec4(0.375, -0.375, -0.125, 1.0), vec4(0.625, -0.375, -0.125, 1.0),
+                vec4(0.625, -0.625, 0.125, 1.0), vec4(0.375, -0.625, 0.125, 1.0),
+                vec4(0.375, -0.375, 0.125, 1.0), vec4(0.625, -0.375, 0.125, 1.0),
+            },
+
+            //DriverFront Wheel -- 12
+            {
+                vec4(-0.625, 0.625, -0.125, 1.0), vec4(-0.375, 0.625, -0.125, 1.0),
+                vec4(-0.375, 0.375, -0.125, 1.0), vec4(-0.625, 0.375, -0.125, 1.0),
+                vec4(-0.625, 0.625, 0.125, 1.0), vec4(-0.375, 0.625, 0.125, 1.0),
+                vec4(-0.375, 0.375, 0.125, 1.0), vec4(-0.625, 0.375, 0.125, 1.0),
+            },
+
+            //PassengerRear Wheel -- 12
+            {
+                vec4(0.625, 0.625, -0.125, 1.0), vec4(0.375, 0.625, -0.125, 1.0),
+                vec4(0.375, 0.375, -0.125, 1.0), vec4(0.625, 0.375, -0.125, 1.0),
+                vec4(0.625, 0.625, 0.125, 1.0), vec4(0.375, 0.625, 0.125, 1.0),
+                vec4(0.375, 0.375, 0.125, 1.0), vec4(0.625, 0.375, 0.125, 1.0),
+            },
         };
 
         //Getting the center of the object
-        center = pos;
-
-        //Creating a way to store the vertices for the wheels
-        
+        center = pos;     
 
         //VAO, EBO and buffers for body, pillarPF, pillarDF, roof, pillarPR, pillarDR, and windows
-        for (int i = 0; i < numobjects-4; i++) {
+        for (int i = 0; i < numobjects; i++) {
             glBindVertexArray(vao[i]);
             glBindBuffer(GL_ARRAY_BUFFER, buffer[i]);
             glBufferData(GL_ARRAY_BUFFER, sizeof(recobjs[i]), recobjs[i], GL_STATIC_DRAW);
@@ -135,11 +164,6 @@ Car::Car(GLuint vertexLoc, GLuint faceLoc,
 
         //Building the model for our car
         buildModel();
-
-        /*
-        Building the wheels
-        Process was adapted from the following link: http://www.songho.ca/opengl/gl_cylinder.html#pipe
-        */
 
     }
 
@@ -170,7 +194,7 @@ void Car::buildModel() {
 void Car::draw() const {
 
     //Drawing the body, pillarPF, pillarDF, roof, pillarPR, pillarDR, and windows
-    for (int i = 0; i < numobjects-4; i++) {
+    for (int i = 0; i < numobjects; i++) {
         glUniformMatrix4fv(model_loc, 1, GL_TRUE, model);
 
         glBindVertexArray(vao[i]);
@@ -178,8 +202,8 @@ void Car::draw() const {
             GLfloat v = 0.75 * (index+1)/6.0;
             //If the object is part of the window group, make it black,
             //else make is varing shades of red
-            if (i == 6 || i == 7 || i == 8 || i == 9) {
-                glUniform4fv(face_loc, 1, vec4(0,0,0,0.15));
+            if (i >= 6) {
+                glUniform4fv(face_loc, 1, vec4(0,0,0,1));
             } else {
                 glUniform4fv(face_loc, 1, vec4(1,v,v,1)); 
             }
@@ -258,6 +282,25 @@ vec4 Car::getCenter() {
 
 direction Car::getFacing() {
     return facing;
+}
+
+//----------------------------------------------------------------------------
+
+//Inivisble hit box to be used by collision detection, not yet implemented
+vec4* Car::getHitBox() {
+    static vec4 hitbox[8] = {
+        vec4(-0.5, -1.0, -0.125, 1.0), vec4(0.5, -1.0, -0.125, 1.0),
+        vec4(0.5, 0.75, -0.125, 1.0), vec4(-0.5, 0.75, -0.125, 1.0),
+        vec4(-0.5, -1.0, 0.5, 1.0), vec4(0.5, -1.0, 0.5, 1.0),
+        vec4(0.5, 0.75, 0.5, 1.0), vec4(-0.5, 0.75, 0.5, 1.0)
+    };
+
+    //multiply the model onto the hitbox
+    for (int i = 0; i < 8; i++) {
+        hitbox[i] = model * hitbox[i];
+    }
+
+    return hitbox;
 }
 
 //----------------------------------------------------------------------------

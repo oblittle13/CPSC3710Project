@@ -1,5 +1,6 @@
 #include <Angel.h>
 #include <iostream>
+#include <random>
 
 #include "car.h"
 #include "building.h"
@@ -10,6 +11,8 @@ using namespace std;
 
 //----------------------------------------------------------------------------
 
+//Global variables
+
 GLfloat theta_x = 0.0, theta_y = 0.0, theta_z = 0.0;
 
 mat4 model, rotate;
@@ -17,14 +20,20 @@ mat4 model, rotate;
 vec4 pos(0.0, 0.0, 0.0, 0.0);
 vec3 scale(1.0, 1.0, 1.0);
 GLuint faceColourLoc, modelLoc, viewLoc, projLoc;
+float build_colour[484*3];
 
 vec4 eye;
 Car *car[1];
-building* builds[24];
-Light* light[10];
+building* builds[484];
+Light* light[324];
 Road *road[4];
 
+int count;
+
 bool top = false;
+bool first_display = true;
+
+//----------------------------------------------------------------------------
 
 void init()
 {
@@ -39,59 +48,68 @@ void init()
   // Initialize the vertex position attribute from the vertex shader
   GLuint loc = glGetAttribLocation( program, "vPosition" );
 
+  //Creating the car
   car[0] = new Car(loc, faceColourLoc, modelLoc, vec4(0, 0, 0, 0), 0, 0, 0.125, 1, 1, 1);
 
-  //south
-  builds[0] = new building(3, loc, faceColourLoc, modelLoc, vec4(3, -3, 0, 0));
-  builds[1] = new building(4, loc, faceColourLoc, modelLoc, vec4(-2, 0, 0, 0)
-  ,0 ,0, 90);
-  builds[2] = new building(2, loc, faceColourLoc, modelLoc, vec4(3, 2, 0, 0));
-  builds[3] = new building(1, loc, faceColourLoc, modelLoc, vec4(-2, 5, 0, 0));
-  builds[4] = new building(4, loc, faceColourLoc, modelLoc, vec4(3, 7, 0, 0)
-  ,0, 0, 90);
-  builds[5] = new building(3, loc, faceColourLoc, modelLoc, vec4(-2, 10, 0, 0));
 
-  //north
-  builds[6] = new building(2, loc, faceColourLoc, modelLoc, vec4(-2, 23, 0, 0)
-  , 0, 0, 90, 1, 1, 2);
-  builds[7] = new building(1, loc, faceColourLoc, modelLoc, vec4(3, 23, 0, 0)
-  , 0, 0, 90, 1, 0.7, 0.7);
-  builds[8] = new building(4, loc, faceColourLoc, modelLoc, vec4(-2.9, 26, 0, 0)
-  , 0, 0, 0, 0.8, 0.6 ,1);
-  builds[9] = new building(3, loc, faceColourLoc, modelLoc, vec4(2.8, 28, 0, 0)
-  , 0, 0, 0, 0.7, 1, 0.7);
-  builds[10] = new building(1, loc, faceColourLoc, modelLoc, vec4(-2, 31, 0, 0)
-  ,0, 0, 90, 1, 1.2, 1);
-  builds[11] = new building(4, loc, faceColourLoc, modelLoc, vec4(3, 33, 0, 0));
+  //This "algorith" creates the buildings with different coordinates, but makes sure that they don't end up on the road or out of bounds
+  // Alternates types (1 of 4), and move each building to be centered 6.5 units away (a block is 13 units wide including 1 road)
+  int type = -1;
+  double Xchange = -61.5;
+  double Ychange = 61.5;
+  bool first = true;
+  for (int i = 0; i < 484; i++) {
+    type++;
 
-  //south West - south east
-  builds[12] = new building(2, loc, faceColourLoc, modelLoc, vec4(5, 13, 0, 0)
-  ,0,0,90);
-  builds[13] = new building(1, loc, faceColourLoc, modelLoc, vec4(-5, 13, 0, 0));
-  builds[14] = new building(3, loc, faceColourLoc, modelLoc, vec4(9, 13, 0, 0));
-  builds[15] = new building(4, loc, faceColourLoc, modelLoc, vec4(-7, 13, 0, 0));
-  builds[16] = new building(1, loc, faceColourLoc, modelLoc, vec4(12, 13, 0, 0));
-  builds[17] = new building(2, loc, faceColourLoc, modelLoc, vec4(-11, 13, 0, 0));
+    if (first) {
+      Ychange -= 6.5;
+    } else {
+      Ychange -= 6.5;
+    }
 
-  //north west to north east
-  builds[18] = new building(3, loc, faceColourLoc, modelLoc, vec4(-6, 21, 0, 0));
-  builds[19] = new building(4, loc, faceColourLoc, modelLoc, vec4(5, 21, 0, 0));
-  builds[20] = new building(1, loc, faceColourLoc, modelLoc, vec4(-9, 21, 0, 0));
-  builds[21] = new building(2, loc, faceColourLoc, modelLoc, vec4(9, 21, 0, 0));
-  builds[22] = new building(4, loc, faceColourLoc, modelLoc, vec4(-13, 21, 0, 0));
-  builds[23] = new building(3, loc, faceColourLoc, modelLoc, vec4(12, 21, 0, 0));
+    if (Xchange > 64) {
+      break;
+    }
 
+    if(first) {
+      first = false;
+    } else {
+      first = true;
+    }
 
-  light[0] = new Light(loc, faceColourLoc, modelLoc, vec4(2.8, 21, 0, 0),
-           0, 0, 0, 1, 1, 1);
-  light[1] = new Light(loc, faceColourLoc, modelLoc, vec4(2.8, 14.5, 0, 0),
-           0, 0, -90, 1, 1, 1);
-  light[2] = new Light(loc, faceColourLoc, modelLoc, vec4(-1.9, 14.5, 0, 0),
-           0, 0, 180, 1, 1, 1);
-  light[3] = new Light(loc, faceColourLoc, modelLoc, vec4(-1.9, 21, 0, 0),
-            0, 0, 90, 1, 1, 1);
+    builds[i] = new building(type * 3 % 4, loc, faceColourLoc, modelLoc, vec4(Xchange, Ychange, 0, 0), 0, 0 ,0, 1, 1, 1);
 
+    if (Ychange < -55) {
+      Ychange = 61.5;
+      Xchange += 6.5;
+    }
+
+    count++;
+
+  }
+
+  //Using the "algorithm" to place the lights, a road is 2 units wide, so we move the other 4 traffic lights to each 3 units away from eachother
+  //This makes it so all the traffic lights are on the corner of the block
+  double positionX = -53.5;
+  double positionY = 53.5;
+  for (int i = 0; i < 81; i++) {
+    light[0 + 4 * i] = new Light(loc, faceColourLoc, modelLoc, vec4(positionX, positionY, 0, 0), 0, 0, -90, 1, 1, 1);
+    light[1 + 4 * i] = new Light(loc, faceColourLoc, modelLoc, vec4(positionX, positionY -3, 0, 0), 0, 0, 0, 1, 1, 1);
+    light[2 + 4 * i] = new Light(loc, faceColourLoc, modelLoc, vec4(positionX + 3, positionY, 0, 0), 0, 0, 180, 1, 1, 1);
+    light[3 + 4 * i] = new Light(loc, faceColourLoc, modelLoc, vec4(positionX + 3, positionY -3, 0, 0), 0, 0, 90, 1, 1, 1);
+
+    positionX += 13;
+
+    if (i % 9 == 0 && i != 0) {
+      positionX = -53.5;
+      positionY -= 13;
+    }
+  }
+
+  //Creating the road (this includes the blocks and roads)
   road[0] = new Road(loc, faceColourLoc, modelLoc);
+
+
   glClearColor( 0.40, 0.40, 0.40, 1.0 ); // gray background
 
   glEnable(GL_DEPTH_TEST);
@@ -101,6 +119,49 @@ void init()
 
 //----------------------------------------------------------------------------
 
+//This as of now is incomplete
+bool getCollision() {
+  bool validX = false;
+  bool validY = false;
+  bool map_bounds = true;
+  vec4 car_center = car[0]->getCenter(); 
+
+  //Seeing if the x coordinate lies in the middle of the road
+  for (int i = 0; i < 9; i++) {
+    if (car_center.x == -52 + 13 * i) {
+      validX = true;
+      break;
+    }
+  }
+
+  //Seeing if the y coordinate lies in the middle of the road
+  for (int i = 0; i < 9; i++) {
+    if (car_center.y == -52 + 13 * i) {
+      validY = true;
+      break;
+    }
+  }
+
+  //Checking for bounds of the map
+  if (car_center.x > 63 || car_center.x < -63) {
+    map_bounds = false;
+  }
+  if (car_center.y > 63 || car_center.y < -63) {
+    map_bounds = false;
+  }
+
+  if (validY && map_bounds || validX && map_bounds) {
+    return true;
+  }
+
+  return false;
+
+
+}
+
+//----------------------------------------------------------------------------
+
+//Gets the position of the eye, as well as what direction it is facing
 vec4 getEye() {
   direction current = car[0]->getFacing();
   vec4 temp;
@@ -118,8 +179,26 @@ vec4 getEye() {
   return temp;
 }
 
+//---------------------------------------------------------------------------
+
+//Calculation of perspective viewing
+mat4 get_projection(mat4 modelview) {
+  GLfloat z1 = 1e10, z2 = -1e10;
+
+  for (int i = 0; i < 8; i++) {
+    auto p = *car[0]->getHitBox();
+    z1 = min(z1, -p.z);
+    z2 = max(z2, -p.z);
+  }
+
+  GLfloat close = z1 - 0.01, away = z2 + 30;
+
+  return Perspective(90, 1.0, close, away);
+}
+
 //----------------------------------------------------------------------------
 
+//This gives us our model and view for when we are behind the car. It is a few units up and behind
 void behindView() {
   rotate = RotateX(theta_x) * RotateY(theta_y) * RotateZ(theta_z);
   model = Translate(pos) * rotate * Scale(scale);
@@ -127,19 +206,22 @@ void behindView() {
   eye = car[0]->getCenter() + getEye();
   vec4 up(0,0,1,0);
   mat4 view = LookAt(eye, car[0]->getCenter(), up);
-  mat4 proj = Ortho(-5, 5, -5, 5, -1, 100);
+  mat4 modelView = model * view;
+  mat4 proj = get_projection(modelView);
 
+  glUniformMatrix4fv(modelLoc, 1, GL_TRUE, model);
   glUniformMatrix4fv(viewLoc, 1, GL_TRUE, view);
   glUniformMatrix4fv(projLoc, 1, GL_TRUE, proj);
 }
 
 //---------------------------------------------------------------------------
 
+//This gives us the model and view when we are above the car, its just units straight above the car
 void topView() {
   rotate = RotateX(theta_x) * RotateY(theta_y) * RotateZ(theta_z);
   model = Translate(pos) * rotate * Scale(scale);
 
-  eye = car[0]->getCenter() + vec4(0, 0, 15, 0);
+  eye = car[0]->getCenter() + vec4(0, 0, 20, 0);
   vec4 up;
   direction current = car[0]->getFacing();
     if (current == north) {
@@ -153,90 +235,69 @@ void topView() {
   }
 
   mat4 view = LookAt(eye, car[0]->getCenter(), up);
-  mat4 proj = Ortho(-5, 5, -5, 5, -1, 100);
+  mat4 modelView = model * view;
+  mat4 proj = get_projection(modelView);
 
+  glUniformMatrix4fv(modelLoc, 1, GL_TRUE, model);
   glUniformMatrix4fv(viewLoc, 1, GL_TRUE, view);
   glUniformMatrix4fv(projLoc, 1, GL_TRUE, proj);
 }
 
 //---------------------------------------------------------------------------
+
+//This functions draws the buildings, takes in the colours from a different functions
 void drawBuildings() {
-  vec4 build1[3] =
-{ vec4(0.97,0,1,1), vec4(0.5,0,0.9,1), vec4(0.75,0.25,0.35,1),};
-  vec4 build2[3] =
-  { vec4(1,1,1,1), vec4(00,1,1,1), vec4(0.75,0.25,0.35,1),};
-  vec4 build3[3] =
-  { vec4(1,0.8,0.6,1), vec4(1,0,0,1),};
-  vec4 build4[4] =
-  { vec4(0.87,0.8,1,1), vec4(0.85,0,0.85,1), vec4(0,0,1,1),};
-  vec4 build5[4] =
-  { vec4(0.2,0.8,1,1), vec4(0.15,0,0.65,1), vec4(1,0,1,1),};
-  vec4 build6[4] =
-  { vec4(1,1,0.2,1), vec4(0.5,0.1,0.25,1), vec4(1,0,1,1),};
-  vec4 build7[4] =
-  { vec4(0.65,0.12,0.8,1), vec4(0.9,0.35,0.05,1), vec4(0.7,0.4,0.2,1),};
-  vec4 build8[4] =
-  { vec4(0.5,0.72,0.5,1), vec4(0.5,0.22,0.3,1), vec4(0.32,0.34,0.55,1),};
-  vec4 build9[4] =
-  { vec4(0.48,0.09,0.43,1), vec4(0.42,0.33,0.08,1), vec4(0.99,0.15,0.19,1),};
-  vec4 build10[4] =
-  { vec4(0.38,0.69,0.7,1), vec4(0.83,0.26,0.38,1), vec4(0.7,0.07,0.27,1),};
-  vec4 build11[4] =
-  { vec4(0.67,0.23,0.62,1), vec4(0.09,0.46,0.25,1), vec4(0.99,0.15,0.19,1),};
-  vec4 build12[4] =
-  { vec4(0.62,0.17,0.57,1), vec4(0.56,0.63,0.37,1), vec4(0.68,0.6,0.7,1),};
-  vec4 build13[4] =
-  { vec4(0.74,0.33,0.6,1), vec4(0.49,0.64,0.56,1), vec4(0.43,0.23,0.47,1),};
-  vec4 build14[4] =
-  { vec4(0.39,0.88,0.74,1), vec4(0.8,0.67,0.36,1), vec4(0.4,0.53,0.51,1),};
-  vec4 build15[4] =
-  { vec4(0.57,0.35,0.48,1), vec4(0.31,0.85,0.53,1), vec4(0.43,0.37,0.4,1),};
-  vec4 build16[4] =
-  { vec4(0.45,0.49,0.55,1), vec4(0.66,0.65,0.46,1), vec4(0.67,0.6,0.2,1),};
-  vec4 build17[4] =
-  { vec4(0.48,0.55,0.57,1), vec4(0.8,0.37,0.14,1), vec4(0.01,0.69,0.66,1),};
-  vec4 build18[4] =
-  { vec4(0.81,0.16,0.64,1), vec4(0.54,0.43,0.05,1), vec4(0.58,0.95,0.6,1),};
-  vec4 build19[4] =
-  { vec4(0.66,0.38,0.42,1), vec4(0.44,0.65,0.9,1), vec4(0.27,0.85,0.13,1),};
-  vec4 build20[4] =
-  { vec4(0.96,0.46,0.04,1), vec4(0.28,0.5,0.48,1), vec4(0.64,0.21,0.51,1),};
-  vec4 build21[4] =
-  { vec4(0.31,0.51,0.21,1), vec4(0.43,0.52,0.65,1), vec4(0.57,0.77,0.55,1),};
-  vec4 build22[4] =
-  { vec4(0.18,0.32,0.24,1), vec4(0.73,0.9,0.27,1), vec4(0.46,0.37,0.71,1),};
-  vec4 build23[4] =
-  { vec4(0.44,0.59,0.87,1), vec4(0.78,0.52,0.36,1), vec4(0.71,0.4,0.51,1),};
+  for (int i = 0; i < count; i++) {
+    //You may be asking yourself, what on earth is this? Well its the random numbers of array indices
+    //my computer just doesnt like at all, so we skip them -- O'Brien Little
+    if (i == 9 || i == 10 || i == 24 || i == 54 || i == 111 || i == 113 || i == 114
+    || i == 230 || i == 232 || i == 234 || i == 264 || i == 360 || i == 361 || i == 362 || i == 392 || i == 406 || i == 464
+    || i == 466 || i == 468 || i == 470 || i == 472) {
+      continue;
+    }
+
+    float a = build_colour[0 + i*3];
+    float b = build_colour[2 + i*3];
+    float c = build_colour[3 + i*3];
+    vec4 colour[3] = {
+      vec4(a,b,c,1), vec4(c, a, b, 1), vec4(b, c, a, 1)
+    };
+    builds[i]->draw(colour);
+  }
+
+}
+//---------------------------------------------------------------------------
+
+//This functions generates random colours using srand and time. The random generator from 0 to 1 was found on:
+// stackexcahnge, if i can find the post again, ill add it in here, but just know i didnt come up with it
+void genColours() {
+  //Im using a random number generator from 0 - 1 here, in order to randomize the colours,
+// much easier than creating 484 * 3 vec4s...
+  constexpr int FLOAT_MIN = 0;
+  constexpr int FLOAT_MAX = 1;
+
+  srand(time(nullptr));
+    for (int i = 0; i < count; i++) {
+    //You may be asking yourself, what on earth is this? Well its the random numbers of array indices
+    //my computer just doesnt like at all, so we skip them -- O'Brien Little
+    if (i == 9 || i == 10 || i == 24 || i == 54 || i == 111 || i == 113 || i == 114
+    || i == 230 || i == 232 || i == 234 || i == 264 || i == 392 || i == 406 || i == 464
+    || i == 466 || i == 468 || i == 470 || i == 472) {
+      continue;
+    }
+
+    build_colour[0 + i*3] = FLOAT_MIN + (float)(rand()) / ((float)(RAND_MAX/(FLOAT_MAX - FLOAT_MIN)));
+    build_colour[1 + i*3] = FLOAT_MIN + (float)(rand()) / ((float)(RAND_MAX/(FLOAT_MAX - FLOAT_MIN)));
+    build_colour[2 + i*3] = FLOAT_MIN + (float)(rand()) / ((float)(RAND_MAX/(FLOAT_MAX - FLOAT_MIN)));
 
 
-  builds[0]->draw(build1);
-  builds[1]->draw(build2);
-  builds[2]->draw(build3);
-  builds[3]->draw(build4);
-  builds[4]->draw(build4);
-  builds[5]->draw(build5);
-  builds[6]->draw(build6);
-  builds[7]->draw(build7);
-  builds[8]->draw(build8);
-  builds[9]->draw(build9);
-  builds[10]->draw(build10);
-  builds[11]->draw(build11);
-  builds[12]->draw(build12);
-  builds[13]->draw(build13);
-  builds[14]->draw(build14);
-  builds[15]->draw(build15);
-  builds[16]->draw(build16);
-  builds[17]->draw(build17);
-  builds[18]->draw(build18);
-  builds[19]->draw(build19);
-  builds[20]->draw(build20);
-  builds[21]->draw(build21);
-  builds[22]->draw(build22);
-  builds[23]->draw(build23);
+
+  }
 }
 
 //---------------------------------------------------------------------------
 
+//This functions displays all elements of the scene
 void display( void )
 {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
@@ -246,13 +307,20 @@ void display( void )
   } else {
     behindView();
   }
-   drawBuildings();
+
+  //This is so the buildings don't change colours every redisplay
+  if (first_display) {
+    genColours();
+    first_display = false;
+  }
+
+  drawBuildings();
 
   for (int i = 0; i < 1; i++) {
     car[i]->draw();
   }
 
-  for (int i = 0; i < 4; i++) {
+  for (int i = 0; i < 324; i++) {
     light[i]->draw();
   }
 
@@ -263,6 +331,7 @@ void display( void )
 
 //----------------------------------------------------------------------------
 
+//Processes keyboard inputs
 void keyboard( unsigned char key, int x, int y )
 {
   switch ( key ) {
@@ -277,6 +346,7 @@ void keyboard( unsigned char key, int x, int y )
 
 //Movement function for the car and view swap
 void arrow(int key, int x, int y) {
+  bool possible;
   switch (key) {
     case GLUT_KEY_LEFT:
     car[0]->turn(90);
@@ -288,17 +358,33 @@ void arrow(int key, int x, int y) {
 
     case GLUT_KEY_UP:
     if (top == true) {
-      car[0]->updatePos(-1.10);
+      car[0]->updatePos(-1);
+      possible = getCollision();
+      if (possible == false) {
+        car[0]->updatePos(1);
+      }
     } else {
-      car[0]->updatePos(1.10);
+      car[0]->updatePos(1);
+      possible = getCollision();
+      if (possible == false) {
+        car[0]->updatePos(-1);
+      }
     }
     break;
 
     case GLUT_KEY_DOWN:
     if (top == true) {
-      car[0]->updatePos(1.10);
+      car[0]->updatePos(1);
+      possible = getCollision();
+      if (possible == false) {
+        car[0]->updatePos(-1);
+      }
     } else {
-      car[0]->updatePos(-1.10);
+      car[0]->updatePos(-1);
+      possible = getCollision();
+      if (possible == false) {
+        car[0]->updatePos(1);
+      }
     }
     break;
 
@@ -316,9 +402,10 @@ void arrow(int key, int x, int y) {
 
 //---------------------------------------------------------------------------
 
+//Timer which changes the colours of the traffic lights
 void timer(int val)
 {
-  for (int i = 0; i < 4; i++) {
+  for (int i = 0; i < 324; i++) {
     light[i]->next_colour();
   }
   glutPostRedisplay();
@@ -327,6 +414,7 @@ void timer(int val)
 
 //---------------------------------------------------------------------------
 
+//Main
 int main( int argc, char **argv )
 {
   glutInit(&argc, argv);

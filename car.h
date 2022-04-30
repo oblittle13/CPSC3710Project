@@ -25,6 +25,7 @@ public:
     void turn(float);
     vec4 getCenter();
     direction getFacing();
+    vec4* getHitBox();
 
 private:
     GLuint vao[14], buffer[14], ebo[6];
