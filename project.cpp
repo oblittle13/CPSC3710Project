@@ -44,30 +44,30 @@ void init()
   //south
   builds[0] = new building(3, loc, faceColourLoc, modelLoc, vec4(2.8, -3, 0, 0)
   ,0,0,0, 0.5,0.5,0.5);
-  builds[1] = new building(4, loc, faceColourLoc, modelLoc, vec4(-2, 0, 0, 0)
+  builds[1] = new building(4, loc, faceColourLoc, modelLoc, vec4(-2, -1, 0, 0)
   ,0 ,0, 90, 0.8,0.9,0.8);
-  builds[2] = new building(2, loc, faceColourLoc, modelLoc, vec4(3, 2, 0, 0));
-  builds[3] = new building(1, loc, faceColourLoc, modelLoc, vec4(-2, 5, 0, 0)
+  builds[2] = new building(2, loc, faceColourLoc, modelLoc, vec4(3, 3, 0, 0));
+  builds[3] = new building(1, loc, faceColourLoc, modelLoc, vec4(-2, 6, 0, 0)
   ,0,0,90,0.8,0.9,0.7);
-  builds[4] = new building(4, loc, faceColourLoc, modelLoc, vec4(3, 7, 0, 0)
+  builds[4] = new building(4, loc, faceColourLoc, modelLoc, vec4(3, 10, 0, 0)
   ,0, 0, 90);
-  builds[5] = new building(3, loc, faceColourLoc, modelLoc, vec4(-2, 10, 0, 0)
+  builds[5] = new building(3, loc, faceColourLoc, modelLoc, vec4(-2, 12, 0, 0)
   ,0, 0, 90);
 
   //north
   builds[6] = new building(2, loc, faceColourLoc, modelLoc, vec4(-2, 23, 0, 0)
   , 0, 0, 90, 1, 1, 2);
-  builds[7] = new building(1, loc, faceColourLoc, modelLoc, vec4(3, 23, 0, 0)
+  builds[7] = new building(1, loc, faceColourLoc, modelLoc, vec4(3, 26, 0, 0)
   , 0, 0, 90, 1, 0.7, 0.7);
-  builds[8] = new building(4, loc, faceColourLoc, modelLoc, vec4(-2.9, 26, 0, 0)
+  builds[8] = new building(4, loc, faceColourLoc, modelLoc, vec4(-2.9, 29, 0, 0)
   , 0, 0, 0, 0.8, 0.6 ,1);
-  builds[9] = new building(3, loc, faceColourLoc, modelLoc, vec4(2.8, 28, 0, 0)
+  builds[9] = new building(3, loc, faceColourLoc, modelLoc, vec4(2.8, 31, 0, 0)
   , 0, 0, 0, 0.7, 1, 0.7);
-  builds[10] = new building(1, loc, faceColourLoc, modelLoc, vec4(-2, 31, 0, 0)
+  builds[10] = new building(1, loc, faceColourLoc, modelLoc, vec4(-2, 33, 0, 0)
   ,0, 0, 90, 1, 1.2, 1);
-  builds[11] = new building(4, loc, faceColourLoc, modelLoc, vec4(3, 33, 0, 0));
+  builds[11] = new building(4, loc, faceColourLoc, modelLoc, vec4(3, 36, 0, 0));
 
-  //south West
+  //south West to south 
   builds[12] = new building(2, loc, faceColourLoc, modelLoc, vec4(5, 13, 0, 0)
   ,0,0,90, 1.2, 0.8, 1.1);
   builds[13] = new building(1, loc, faceColourLoc, modelLoc, vec4(-5, 13, 0, 0)

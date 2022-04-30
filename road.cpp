@@ -26,7 +26,7 @@ face_loc{faceLoc}, model_loc{modelLoc} {
         //vertical road
         {
             vec4(-0.7, -5, 0.01 , 1), vec4(1.4, -5, 0.01, 1),
-            vec4(1.4, 35, 0.01, 1), vec4(-0.7, 35, 0.01, 1),
+            vec4(1.4, 39, 0.01, 1), vec4(-0.7, 39, 0.01, 1),
         },
 
         //horizontal road
@@ -43,20 +43,20 @@ face_loc{faceLoc}, model_loc{modelLoc} {
 
         //top most road - horizontal
         {
-          vec4(-15, 35, 0.01, 1), vec4(15, 35, 0.01, 1),
-          vec4(15, 39, 0.01, 1), vec4(-15, 39, 0.01, 1),
+          vec4(-15, 39, 0.01, 1), vec4(15, 39, 0.01, 1),
+          vec4(15, 43, 0.01, 1), vec4(-15, 43, 0.01, 1),
         },
 
         //left most road - verticle
         {
             vec4(-15, -9, 0.01 , 1), vec4(-19, -9, 0.01, 1),
-            vec4(-19, 39, 0.01, 1), vec4(-15, 39, 0.01, 1),
+            vec4(-19, 43, 0.01, 1), vec4(-15, 43, 0.01, 1),
         },
 
         //right most road - verticle
         {
             vec4(15, -9, 0.01 , 1), vec4(19, -9, 0.01, 1),
-            vec4(19, 39, 0.01, 1), vec4(15, 39, 0.01, 1),
+            vec4(19, 43, 0.01, 1), vec4(15, 43, 0.01, 1),
         },
 /*
         //Left most -1 - verticle
