@@ -67,8 +67,6 @@ void init()
       Ychange -= 6.5;
     }
 
-    cout << Xchange << endl;
-
     if (Xchange > 64) {
       break;
     }
@@ -170,17 +168,17 @@ vec4 getEye() {
 
 //---------------------------------------------------------------------------
 
-//This is incomplete as of now
+//Calculation of perspective viewing
 mat4 get_projection(mat4 modelview) {
   GLfloat z1 = 1e10, z2 = -1e10;
 
   for (int i = 0; i < 8; i++) {
-    auto p = modelview * *car[0]->getHitBox();
+    auto p = *car[0]->getHitBox();
     z1 = min(z1, -p.z);
     z2 = max(z2, -p.z);
   }
 
-  GLfloat close = z1 - 0.01, away = z2 + 10.0;
+  GLfloat close = z1 - 0.01, away = z2 + 30;
 
   return Perspective(90, 1.0, close, away);
 }
@@ -196,8 +194,7 @@ void behindView() {
   vec4 up(0,0,1,0);
   mat4 view = LookAt(eye, car[0]->getCenter(), up);
   mat4 modelView = model * view;
-  mat4 proj = Ortho(-5, 5, -5, 5, -1, 100);
-  //mat4 proj = get_projection(modelView);
+  mat4 proj = get_projection(modelView);
 
   glUniformMatrix4fv(modelLoc, 1, GL_TRUE, model);
   glUniformMatrix4fv(viewLoc, 1, GL_TRUE, view);
@@ -226,8 +223,7 @@ void topView() {
 
   mat4 view = LookAt(eye, car[0]->getCenter(), up);
   mat4 modelView = model * view;
-  mat4 proj = Ortho(-5, 5, -5, 5, -1, 100);
-  //mat4 proj = get_projection(modelView);
+  mat4 proj = get_projection(modelView);
 
   glUniformMatrix4fv(modelLoc, 1, GL_TRUE, model);
   glUniformMatrix4fv(viewLoc, 1, GL_TRUE, view);
