@@ -13,7 +13,7 @@ class Road {
     void draw() const;
 
     private:
-    GLuint vao[19], buffer[19], ebo[1];
+    GLuint vao[19], buffer[19], ebo[19];
     mat4 model;
     GLuint vertex_loc, face_loc, model_loc;
 };
