@@ -11,6 +11,8 @@ using namespace std;
 
 //----------------------------------------------------------------------------
 
+//Global variables
+
 GLfloat theta_x = 0.0, theta_y = 0.0, theta_z = 0.0;
 
 mat4 model, rotate;
@@ -31,6 +33,8 @@ int count;
 bool top = false;
 bool first_display = true;
 
+//----------------------------------------------------------------------------
+
 void init()
 {
   // Load shaders and use the resulting shader program
@@ -44,10 +48,12 @@ void init()
   // Initialize the vertex position attribute from the vertex shader
   GLuint loc = glGetAttribLocation( program, "vPosition" );
 
+  //Creating the car
   car[0] = new Car(loc, faceColourLoc, modelLoc, vec4(0, 0, 0, 0), 0, 0, 0.125, 1, 1, 1);
 
 
   //This "algorith" creates the buildings with different coordinates, but makes sure that they don't end up on the road or out of bounds
+  // Alternates types (1 of 4), and move each building to be centered 6.5 units away (a block is 13 units wide including 1 road)
   int type = -1;
   double Xchange = -61.5;
   double Ychange = 61.5;
@@ -84,7 +90,8 @@ void init()
 
   }
 
-  //Using the "algorithm" to place the lights
+  //Using the "algorithm" to place the lights, a road is 2 units wide, so we move the other 4 traffic lights to each 3 units away from eachother
+  //This makes it so all the traffic lights are on the corner of the block
   double positionX = -53.5;
   double positionY = 53.5;
   for (int i = 0; i < 81; i++) {
@@ -101,7 +108,10 @@ void init()
     }
   }
 
+  //Creating the road (this includes the blocks and roads)
   road[0] = new Road(loc, faceColourLoc, modelLoc);
+
+
   glClearColor( 0.40, 0.40, 0.40, 1.0 ); // gray background
 
   glEnable(GL_DEPTH_TEST);
@@ -111,6 +121,7 @@ void init()
 
 //----------------------------------------------------------------------------
 
+//This as of now is incomplete
 bool getCollision() {
   float currentX, currentY, currentZ;
   vec4 currentarray[8];
@@ -139,6 +150,7 @@ bool getCollision() {
 
 //----------------------------------------------------------------------------
 
+//Gets the position of the eye, as well as what direction it is facing
 vec4 getEye() {
   direction current = car[0]->getFacing();
   vec4 temp;
@@ -158,6 +170,7 @@ vec4 getEye() {
 
 //---------------------------------------------------------------------------
 
+//This is incomplete as of now
 mat4 get_projection(mat4 modelview) {
   GLfloat z1 = 1e10, z2 = -1e10;
 
@@ -174,6 +187,7 @@ mat4 get_projection(mat4 modelview) {
 
 //----------------------------------------------------------------------------
 
+//This gives us our model and view for when we are behind the car. It is a few units up and behind
 void behindView() {
   rotate = RotateX(theta_x) * RotateY(theta_y) * RotateZ(theta_z);
   model = Translate(pos) * rotate * Scale(scale);
@@ -192,11 +206,12 @@ void behindView() {
 
 //---------------------------------------------------------------------------
 
+//This gives us the model and view when we are above the car, its just units straight above the car
 void topView() {
   rotate = RotateX(theta_x) * RotateY(theta_y) * RotateZ(theta_z);
   model = Translate(pos) * rotate * Scale(scale);
 
-  eye = car[0]->getCenter() + vec4(0, 0, 100, 0);
+  eye = car[0]->getCenter() + vec4(0, 0, 20, 0);
   vec4 up;
   direction current = car[0]->getFacing();
     if (current == north) {
@@ -221,6 +236,7 @@ void topView() {
 
 //---------------------------------------------------------------------------
 
+//This functions draws the buildings, takes in the colours from a different functions
 void drawBuildings() {
   for (int i = 0; i < count; i++) {
     //You may be asking yourself, what on earth is this? Well its the random numbers of array indices
@@ -243,6 +259,8 @@ void drawBuildings() {
 }
 //---------------------------------------------------------------------------
 
+//This functions generates random colours using srand and time. The random generator from 0 to 1 was found on:
+// stackexcahnge, if i can find the post again, ill add it in here, but just know i didnt come up with it
 void genColours() {
   //Im using a random number generator from 0 - 1 here, in order to randomize the colours,
 // much easier than creating 484 * 3 vec4s...
@@ -270,6 +288,7 @@ void genColours() {
 
 //---------------------------------------------------------------------------
 
+//This functions displays all elements of the scene
 void display( void )
 {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
@@ -303,6 +322,7 @@ void display( void )
 
 //----------------------------------------------------------------------------
 
+//Processes keyboard inputs
 void keyboard( unsigned char key, int x, int y )
 {
   switch ( key ) {
@@ -373,6 +393,7 @@ void arrow(int key, int x, int y) {
 
 //---------------------------------------------------------------------------
 
+//Timer which changes the colours of the traffic lights
 void timer(int val)
 {
   for (int i = 0; i < 324; i++) {
@@ -384,6 +405,7 @@ void timer(int val)
 
 //---------------------------------------------------------------------------
 
+//Main
 int main( int argc, char **argv )
 {
   glutInit(&argc, argv);
