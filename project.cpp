@@ -121,29 +121,42 @@ void init()
 
 //This as of now is incomplete
 bool getCollision() {
-  float currentX, currentY, currentZ;
-  vec4 currentarray[8];
-  for (int i = 0; i < 8; i++) {
-    vec4 current = *car[0]->getHitBox()[i];
-    currentX = current.x;
-    currentY = current.y;
-    currentZ = current.z;
+  bool validX = false;
+  bool validY = false;
+  bool map_bounds = true;
+  vec4 car_center = car[0]->getCenter(); 
 
-    for (int i2 = 0; i2 < road[0]->roadmap().size(); i2++) {
-      if (currentX == road[0]->roadmap().at(i2).x) {
-        std::cout << "CurrentX: " << currentX << " vs. roadX: " << road[0]->roadmap().at(i2).x << std::endl;
-        return false;
-      } else if ((currentY == road[0]->roadmap().at(i2).y)) {
-        std::cout << "CurrentX: " << currentY << " vs. roadY: " << road[0]->roadmap().at(i2).y << std::endl;
-        return false;
-    } else if ((currentZ == road[0]->roadmap().at(i2).z)) {
-      std::cout << "CurrentX: " << currentZ << " vs. roadZ: " << road[0]->roadmap().at(i2).z << std::endl;
-      return false;
-    }
+  //Seeing if the x coordinate lies in the middle of the road
+  for (int i = 0; i < 9; i++) {
+    if (car_center.x == -52 + 13 * i) {
+      validX = true;
+      break;
     }
   }
 
-  return true;
+  //Seeing if the y coordinate lies in the middle of the road
+  for (int i = 0; i < 9; i++) {
+    if (car_center.y == -52 + 13 * i) {
+      validY = true;
+      break;
+    }
+  }
+
+  //Checking for bounds of the map
+  if (car_center.x > 63 || car_center.x < -63) {
+    map_bounds = false;
+  }
+  if (car_center.y > 63 || car_center.y < -63) {
+    map_bounds = false;
+  }
+
+  if (validY && map_bounds || validX && map_bounds) {
+    return true;
+  }
+
+  return false;
+
+
 }
 
 //----------------------------------------------------------------------------
