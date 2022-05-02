@@ -248,13 +248,6 @@ void topView() {
 //This functions draws the buildings, takes in the colours from a different functions
 void drawBuildings() {
   for (int i = 0; i < count; i++) {
-    //You may be asking yourself, what on earth is this? Well its the random numbers of array indices
-    //my computer just doesnt like at all, so we skip them -- O'Brien Little
-    if (i == 9 || i == 10 || i == 24 || i == 54 || i == 111 || i == 113 || i == 114
-    || i == 230 || i == 232 || i == 234 || i == 264 || i == 360 || i == 361 || i == 362 || i == 392 || i == 406 || i == 464
-    || i == 466 || i == 468 || i == 470 || i == 472) {
-      continue;
-    }
 
     float a = build_colour[0 + i*3];
     float b = build_colour[2 + i*3];
@@ -278,19 +271,10 @@ void genColours() {
 
   srand(time(nullptr));
     for (int i = 0; i < count; i++) {
-    //You may be asking yourself, what on earth is this? Well its the random numbers of array indices
-    //my computer just doesnt like at all, so we skip them -- O'Brien Little
-    if (i == 9 || i == 10 || i == 24 || i == 54 || i == 111 || i == 113 || i == 114
-    || i == 230 || i == 232 || i == 234 || i == 264 || i == 392 || i == 406 || i == 464
-    || i == 466 || i == 468 || i == 470 || i == 472) {
-      continue;
-    }
 
     build_colour[0 + i*3] = FLOAT_MIN + (float)(rand()) / ((float)(RAND_MAX/(FLOAT_MAX - FLOAT_MIN)));
     build_colour[1 + i*3] = FLOAT_MIN + (float)(rand()) / ((float)(RAND_MAX/(FLOAT_MAX - FLOAT_MIN)));
     build_colour[2 + i*3] = FLOAT_MIN + (float)(rand()) / ((float)(RAND_MAX/(FLOAT_MAX - FLOAT_MIN)));
-
-
 
   }
 }

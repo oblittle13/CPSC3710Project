@@ -39,367 +39,250 @@ building::building(int type, GLuint vertexLoc, GLuint faceLoc, GLuint modelLoc, 
 
 building::~building()
 {
-  glDeleteVertexArrays(5, vao);
-  glDeleteBuffers(5, buffer);
+  glDeleteVertexArrays(num, vao);
+  glDeleteBuffers(num, buffer);
   glDeleteBuffers(6, ebo);
-  glDeleteBuffers(6, ebo2);
-  glDeleteBuffers(6, ebo3);
-  glDeleteBuffers(6, ebo4);
-  glDeleteBuffers(6, ebo5);
 
 }
 
 void building::typeOne() {
-      const vec4 point[8] =
-    { vec4(-1, -1, 0.0, 1.0), vec4(1, -1, 0.0, 1.0),
+  num = 3;
+      const vec4 point[num][8] = {
+    //Building
+    { 
+      vec4(-1, -1, 0.0, 1.0), vec4(1, -1, 0.0, 1.0),
       vec4(1, 1, 0.0, 1.0), vec4(-1, 1, 0.0, 1.0),
       vec4(-1, -1, 6.0, 1.0), vec4(1, -1, 6.0, 1.0),
       vec4(1, 1, 6.0, 1.0), vec4(-1, 1, 6.0, 1.0)
-    };
+    },
 
-  glGenVertexArrays(3, vao);
-  glGenBuffers(3, buffer);
-
-  glBindVertexArray(vao[0]);
-  glBindBuffer(GL_ARRAY_BUFFER, buffer[0]);
-  glBufferData(GL_ARRAY_BUFFER, sizeof(point), point, GL_STATIC_DRAW);
-  glEnableVertexAttribArray(vertex_loc);
-  glVertexAttribPointer(vertex_loc, 4, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(0));
-
-  glGenBuffers(6, ebo);
-  for (int i = 0; i < 6; i++) {
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo[i]);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, 4*sizeof(GLuint), face[i], GL_STATIC_DRAW);
-  }
-
-      const vec4 windows_point[8] =
-    { vec4(-1.25, 0, 4, 1.0), vec4(1.25, 0, 4, 1.0),
+    //Window set 1
+    {
+      vec4(-1.25, 0, 4, 1.0), vec4(1.25, 0, 4, 1.0),
       vec4(1.25, -1.25, 4, 1.0), vec4(-1.25, -1.25, 4, 1.0),
       vec4(-1.25, 0, 5.5, 1.0), vec4(1.25, 0, 5.5, 1.0),
       vec4(1.25, -1.25, 5.5, 1.0), vec4(-1.25, -1.25, 5.5, 1.0)
-    };
+    },
 
-  glBindVertexArray(vao[1]);
-  glBindBuffer(GL_ARRAY_BUFFER, buffer[1]);
-  glBufferData(GL_ARRAY_BUFFER, sizeof(windows_point), windows_point, GL_STATIC_DRAW);
-  glEnableVertexAttribArray(vertex_loc);
-  glVertexAttribPointer(vertex_loc, 4, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(0));
-
-  glGenBuffers(6, ebo2);
-
-
-  for (int i = 0; i < 6; i++) {
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo2[i]);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, 4*sizeof(GLuint), face[i], GL_STATIC_DRAW);
-  }
-    const vec4 windows_point2[8] =
-    { vec4(-1.25, 0, 2, 1.0), vec4(1.25, 0, 2, 1.0),
+    //Window set 2
+    { 
+      vec4(-1.25, 0, 2, 1.0), vec4(1.25, 0, 2, 1.0),
       vec4(1.25, 1.25, 2, 1.0), vec4(-1.25, 1.25, 2, 1.0),
       vec4(-1.25, 0, 3.5, 1.0), vec4(1.25, 0, 3.5, 1.0),
       vec4(1.25, 1.25, 3.5, 1.0), vec4(-1.25, 1.25, 3.5, 1.0)
-    };
+    },
+  };
 
-  glBindVertexArray(vao[2]);
-  glBindBuffer(GL_ARRAY_BUFFER, buffer[2]);
-  glBufferData(GL_ARRAY_BUFFER, sizeof(windows_point2), windows_point2, GL_STATIC_DRAW);
-  glEnableVertexAttribArray(vertex_loc);
-  glVertexAttribPointer(vertex_loc, 4, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(0));
+  glGenVertexArrays(num, vao);
+  glGenBuffers(num, buffer);
+        //VAO, EBO and buffers for body, pillarPF, pillarDF, roof, pillarPR, pillarDR, and windows
+        for (int i = 0; i < num; i++) {
+            glBindVertexArray(vao[i]);
+            glBindBuffer(GL_ARRAY_BUFFER, buffer[i]);
+            glBufferData(GL_ARRAY_BUFFER, sizeof(point[i]), point[i], GL_STATIC_DRAW);
+            glEnableVertexAttribArray(vertex_loc);
+            glVertexAttribPointer(vertex_loc, 4, GL_FLOAT, GL_FALSE, 0,
+			BUFFER_OFFSET(0));
 
-  glGenBuffers(6, ebo3);
-
-
-  for (int i = 0; i < 6; i++) {
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo3[i]);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, 4*sizeof(GLuint), face[i], GL_STATIC_DRAW);
-  }
+            glGenBuffers(6, ebo);
+            for (int index = 0; index < 6; index++) {
+                glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo[index]);
+                glBufferData(GL_ELEMENT_ARRAY_BUFFER, 4*sizeof(GLuint), face[index], GL_STATIC_DRAW);
+            }
+        }
 
 }
 
 void building::typeTwo() {
 
-      const vec4 point[8] =
-    { vec4(-1, -1, 0.0, 1.0), vec4(1, -1, 0.0, 1.0),
+  num = 2;
+  const vec4 point[num][8] = {
+
+    //Building Base
+  {
+      vec4(-1, -1, 0.0, 1.0), vec4(1, -1, 0.0, 1.0),
       vec4(1, 1, 0.0, 1.0), vec4(-1, 1, 0.0, 1.0),
       vec4(-1, -1, 1.0, 1.0), vec4(1, -1, 1.0, 1.0),
       vec4(1, 1, 1.0, 1.0), vec4(-1, 1, 1.0, 1.0)
-    };
+    },
 
-  glGenVertexArrays(2, vao);
-  glGenBuffers(2, buffer);
-
-  glBindVertexArray(vao[0]);
-  glBindBuffer(GL_ARRAY_BUFFER, buffer[0]);
-  glBufferData(GL_ARRAY_BUFFER, sizeof(point), point, GL_STATIC_DRAW);
-  glEnableVertexAttribArray(vertex_loc);
-  glVertexAttribPointer(vertex_loc, 4, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(0));
-
-  glGenBuffers(6, ebo);
-  for (int i = 0; i < 6; i++) {
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo[i]);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, 4*sizeof(GLuint), face[i], GL_STATIC_DRAW);
-  }
-
-  const vec4 point2[8] = {
-  vec4(-1.5, -1.5, 1, 1), vec4(1.5, -1.5, 1, 1),
-  vec4(1.5, 1.5, 1, 1), vec4(-1.5, 1.5, 1, 1),
-  vec4(-1.25, -0.5, 2, 1), vec4(1.25, -0.5, 2, 1),
-  vec4(1.25, 0.5, 2, 1), vec4(-1.25, 0.5, 2, 1)
+    //Building Top
+    {
+      vec4(-1.5, -1.5, 1, 1), vec4(1.5, -1.5, 1, 1),
+      vec4(1.5, 1.5, 1, 1), vec4(-1.5, 1.5, 1, 1),
+      vec4(-1.25, -0.5, 2, 1), vec4(1.25, -0.5, 2, 1),
+      vec4(1.25, 0.5, 2, 1), vec4(-1.25, 0.5, 2, 1)
+    },
   };
 
-    glBindVertexArray(vao[1]);
-  glBindBuffer(GL_ARRAY_BUFFER, buffer[1]);
-  glBufferData(GL_ARRAY_BUFFER, sizeof(point2), point2, GL_STATIC_DRAW);
-  glEnableVertexAttribArray(vertex_loc);
-  glVertexAttribPointer(vertex_loc, 4, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(0));
+    glGenVertexArrays(num, vao);
+  glGenBuffers(num, buffer);
+        //VAO, EBO and buffers for body, pillarPF, pillarDF, roof, pillarPR, pillarDR, and windows
+        for (int i = 0; i < num; i++) {
+            glBindVertexArray(vao[i]);
+            glBindBuffer(GL_ARRAY_BUFFER, buffer[i]);
+            glBufferData(GL_ARRAY_BUFFER, sizeof(point[i]), point[i], GL_STATIC_DRAW);
+            glEnableVertexAttribArray(vertex_loc);
+            glVertexAttribPointer(vertex_loc, 4, GL_FLOAT, GL_FALSE, 0,
+			BUFFER_OFFSET(0));
 
-  glGenBuffers(6, ebo2);
-  for (int i = 0; i < 6; i++) {
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo2[i]);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, 4*sizeof(GLuint), face[i], GL_STATIC_DRAW);
-  }
+            glGenBuffers(6, ebo);
+            for (int index = 0; index < 6; index++) {
+                glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo[index]);
+                glBufferData(GL_ELEMENT_ARRAY_BUFFER, 4*sizeof(GLuint), face[index], GL_STATIC_DRAW);
+            }
+        }
 
 
 }
 
 void building::typeThree() {
-        const vec4 point[8] =
-    { vec4(-1, -1, 0.0, 1.0), vec4(1, -1, 0.0, 1.0),
+  num = 5;
+
+  const vec4 point[num][8] = {
+
+    //Building Base
+    {
+      vec4(-1, -1, 0.0, 1.0), vec4(1, -1, 0.0, 1.0),
       vec4(1, 1, 0.0, 1.0), vec4(-1, 1, 0.0, 1.0),
       vec4(-1, -1, 3.0, 1.0), vec4(1, -1, 3.0, 1.0),
       vec4(1, 1, 3.0, 1.0), vec4(-1, 1, 3.0, 1.0)
-    };
+    },
 
-  glGenVertexArrays(5, vao);
-  glGenBuffers(5, buffer);
-
-  glBindVertexArray(vao[0]);
-  glBindBuffer(GL_ARRAY_BUFFER, buffer[0]);
-  glBufferData(GL_ARRAY_BUFFER, sizeof(point), point, GL_STATIC_DRAW);
-  glEnableVertexAttribArray(vertex_loc);
-  glVertexAttribPointer(vertex_loc, 4, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(0));
-
-  glGenBuffers(6, ebo);
-  for (int i = 0; i < 6; i++) {
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo[i]);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, 4*sizeof(GLuint), face[i], GL_STATIC_DRAW);
-  }
-    const vec4 point2[8] = {
+    //Building Top
+    {
       vec4(-0.75, -0.75, 3.0, 1.0), vec4(0.75, -0.75, 3.0, 1.0),
       vec4(0.75, 0.75, 3.0, 1.0), vec4(-0.75, 0.75, 3.0, 1.0),
       vec4(-0.75, -0.75, 5.0, 1.0), vec4(0.75, -0.75, 5.0, 1.0),
       vec4(0.75, 0.75, 5.0, 1.0), vec4(-0.75, 0.75, 5.0, 1.0)
-    };
+    },
 
+    {
+      vec4(-0.5, -0.5, 5, 1), vec4(0.5, -0.5, 5, 1),
+      vec4(0.5, 0.5, 5, 1), vec4(-0.5, 0.5, 5, 1),
+      vec4(-0.25, -0.25, 7, 1), vec4(0.25, -0.25, 7, 1),
+      vec4(0.25, 0.25, 7, 1), vec4(-0.25, 0.25, 7, 1)
+    },
 
-    glBindVertexArray(vao[1]);
-  glBindBuffer(GL_ARRAY_BUFFER, buffer[1]);
-  glBufferData(GL_ARRAY_BUFFER, sizeof(point2), point2, GL_STATIC_DRAW);
-  glEnableVertexAttribArray(vertex_loc);
-  glVertexAttribPointer(vertex_loc, 4, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(0));
-
-  glGenBuffers(6, ebo2);
-  for (int i = 0; i < 6; i++) {
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo2[i]);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, 4*sizeof(GLuint), face[i], GL_STATIC_DRAW);
-  }
-
-  const vec4 point3[8] = {
-  vec4(-0.5, -0.5, 5, 1), vec4(0.5, -0.5, 5, 1),
-  vec4(0.5, 0.5, 5, 1), vec4(-0.5, 0.5, 5, 1),
-  vec4(-0.25, -0.25, 7, 1), vec4(0.25, -0.25, 7, 1),
-  vec4(0.25, 0.25, 7, 1), vec4(-0.25, 0.25, 7, 1)
-  };
-
-    glBindVertexArray(vao[2]);
-  glBindBuffer(GL_ARRAY_BUFFER, buffer[2]);
-  glBufferData(GL_ARRAY_BUFFER, sizeof(point3), point3, GL_STATIC_DRAW);
-  glEnableVertexAttribArray(vertex_loc);
-  glVertexAttribPointer(vertex_loc, 4, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(0));
-
-  glGenBuffers(6, ebo3);
-  for (int i = 0; i < 6; i++) {
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo3[i]);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, 4*sizeof(GLuint), face[i], GL_STATIC_DRAW);
-  }
-        const vec4 point4[8] =
-    { vec4(-0.5, -1.01, 0.0, 1.0), vec4(0.5, -1.01, 0.0, 1.0),
+    {
+      vec4(-0.5, -1.01, 0.0, 1.0), vec4(0.5, -1.01, 0.0, 1.0),
       vec4(0.5, 1.01, 0.0, 1.0), vec4(-0.5, 1.01, 0.0, 1.0),
       vec4(-0.5, -1.01, 2.0, 1.0), vec4(0.5, -1.01, 2.0, 1.0),
       vec4(0.5, 1.01, 2.0, 1.0), vec4(-0.5, 1.01, 2.0, 1.0)
-    };
+    },
 
-
-    glBindVertexArray(vao[3]);
-  glBindBuffer(GL_ARRAY_BUFFER, buffer[3]);
-  glBufferData(GL_ARRAY_BUFFER, sizeof(point4), point4, GL_STATIC_DRAW);
-  glEnableVertexAttribArray(vertex_loc);
-  glVertexAttribPointer(vertex_loc, 4, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(0));
-
-  glGenBuffers(6, ebo4);
-  for (int i = 0; i < 6; i++) {
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo4[i]);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, 4*sizeof(GLuint), face[i], GL_STATIC_DRAW);
-  }
-
-          const vec4 point5[8] =
-    { vec4(-1.01, -0.5, 0.0, 1.0), vec4(1.01, -0.5, 0.0, 1.0),
+    {
+      vec4(-1.01, -0.5, 0.0, 1.0), vec4(1.01, -0.5, 0.0, 1.0),
       vec4(1.01, 0.5, 0.0, 1.0), vec4(-1.01, 0.5, 0.0, 1.0),
       vec4(-1.01, -0.5, 2.0, 1.0), vec4(1.01, -0.5, 2.0, 1.0),
       vec4(1.01, 0.5, 2.0, 1.0), vec4(-1.01, 0.5, 2.0, 1.0)
-    };
+    },
+  };
 
-        glBindVertexArray(vao[4]);
-  glBindBuffer(GL_ARRAY_BUFFER, buffer[4]);
-  glBufferData(GL_ARRAY_BUFFER, sizeof(point5), point5, GL_STATIC_DRAW);
-  glEnableVertexAttribArray(vertex_loc);
-  glVertexAttribPointer(vertex_loc, 4, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(0));
+    glGenVertexArrays(num, vao);
+  glGenBuffers(num, buffer);
+        //VAO, EBO and buffers for body, pillarPF, pillarDF, roof, pillarPR, pillarDR, and windows
+        for (int i = 0; i < 5; i++) {
+            glBindVertexArray(vao[i]);
+            glBindBuffer(GL_ARRAY_BUFFER, buffer[i]);
+            glBufferData(GL_ARRAY_BUFFER, sizeof(point[i]), point[i], GL_STATIC_DRAW);
+            glEnableVertexAttribArray(vertex_loc);
+            glVertexAttribPointer(vertex_loc, 4, GL_FLOAT, GL_FALSE, 0,
+			BUFFER_OFFSET(0));
 
-  glGenBuffers(6, ebo5);
-  for (int i = 0; i < 6; i++) {
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo5[i]);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, 4*sizeof(GLuint), face[i], GL_STATIC_DRAW);
-  }
-
-
+            glGenBuffers(6, ebo);
+            for (int index = 0; index < 6; index++) {
+                glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo[index]);
+                glBufferData(GL_ELEMENT_ARRAY_BUFFER, 4*sizeof(GLuint), face[index], GL_STATIC_DRAW);
+            }
+        }
 
 }
 
 void building::typeFour() {
-      const vec4 point[8] =
-    { vec4(-1, -1, 0.0, 1.0), vec4(2, -1, 0.0, 1.0),
+  num = 4;
+
+  const vec4 point[num][8] = {
+
+    //Building Base
+    {
+      vec4(-1, -1, 0.0, 1.0), vec4(2, -1, 0.0, 1.0),
       vec4(2, 1, 0.0, 1.0), vec4(-1, 1, 0.0, 1.0),
       vec4(-1, -1, 3.0, 1.0), vec4(2, -1, 3.0, 1.0),
       vec4(2, 1, 3.0, 1.0), vec4(-1, 1, 3.0, 1.0)
-    };
+    },
 
-  glGenVertexArrays(4, vao);
-  glGenBuffers(4, buffer);
-
-  glBindVertexArray(vao[0]);
-  glBindBuffer(GL_ARRAY_BUFFER, buffer[0]);
-  glBufferData(GL_ARRAY_BUFFER, sizeof(point), point, GL_STATIC_DRAW);
-  glEnableVertexAttribArray(vertex_loc);
-  glVertexAttribPointer(vertex_loc, 4, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(0));
-
-  glGenBuffers(6, ebo);
-  for (int i = 0; i < 6; i++) {
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo[i]);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, 4*sizeof(GLuint), face[i], GL_STATIC_DRAW);
-  }
-
-  const vec4 point2[8] =
-    { vec4(0, -0.5, 3.0, 1.0), vec4(1.75, -0.5, 3.0, 1.0),
+    //Building Top
+    {
+      vec4(0, -0.5, 3.0, 1.0), vec4(1.75, -0.5, 3.0, 1.0),
       vec4(1.75, 0.5, 3.0, 1.0), vec4(0, 0.5, 3.0, 1.0),
       vec4(0, -0.5, 3.5, 1.0), vec4(1.75, -0.5, 3.5, 1.0),
       vec4(1.75, 0.5, 3.5, 1.0), vec4(0, 0.5, 3.5, 1.0)
-    };
-  glBindVertexArray(vao[1]);
-  glBindBuffer(GL_ARRAY_BUFFER, buffer[1]);
-  glBufferData(GL_ARRAY_BUFFER, sizeof(point2), point2, GL_STATIC_DRAW);
-  glEnableVertexAttribArray(vertex_loc);
-  glVertexAttribPointer(vertex_loc, 4, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(0));
+    },
 
-  glGenBuffers(6, ebo2);
-  for (int i = 0; i < 6; i++) {
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo2[i]);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, 4*sizeof(GLuint), face[i], GL_STATIC_DRAW);
-  }
-
-
-      const vec4 windows_point[8] =
-    { vec4(-1.01, 0, 2, 1.0), vec4(1.25, 0, 2, 1.0),
+    {
+      vec4(-1.01, 0, 2, 1.0), vec4(1.25, 0, 2, 1.0),
       vec4(1.25, -1.01, 2, 1.0), vec4(-1.01, -1.01, 2, 1.0),
       vec4(-1.01, 0, 2.5, 1.0), vec4(1.25, 0, 2.5, 1.0),
       vec4(1.25, -1.01, 2.5, 1.0), vec4(-1.01, -1.01, 2.5, 1.0)
-    };
+    },
 
-
-  glBindVertexArray(vao[2]);
-  glBindBuffer(GL_ARRAY_BUFFER, buffer[2]);
-  glBufferData(GL_ARRAY_BUFFER, sizeof(windows_point), windows_point, GL_STATIC_DRAW);
-  glEnableVertexAttribArray(vertex_loc);
-  glVertexAttribPointer(vertex_loc, 4, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(0));
-
-  glGenBuffers(6, ebo3);
-
-
-  for (int i = 0; i < 6; i++) {
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo3[i]);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, 4*sizeof(GLuint), face[i], GL_STATIC_DRAW);
-  }
-
-
-    const vec4 windows_point2[8] =
-    { vec4(-1.01, 0, 1, 1.0), vec4(1.25, 0, 1, 1.0),
+    {
+      vec4(-1.01, 0, 1, 1.0), vec4(1.25, 0, 1, 1.0),
       vec4(1.25, -1.01, 1, 1.0), vec4(-1.01, -1.01, 1, 1.0),
       vec4(-1.01, 0, 1.5, 1.0), vec4(1.25, 0, 1.5, 1.0),
       vec4(1.25, -1.01, 1.5, 1.0), vec4(-1.01, -1.01, 1.5, 1.0)
-    };
+    },
+  };
 
-  glBindVertexArray(vao[3]);
-  glBindBuffer(GL_ARRAY_BUFFER, buffer[3]);
-  glBufferData(GL_ARRAY_BUFFER, sizeof(windows_point2), windows_point2, GL_STATIC_DRAW);
-  glEnableVertexAttribArray(vertex_loc);
-  glVertexAttribPointer(vertex_loc, 4, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(0));
+    glGenVertexArrays(num, vao);
+  glGenBuffers(num, buffer);
+        //VAO, EBO and buffers for body, pillarPF, pillarDF, roof, pillarPR, pillarDR, and windows
+        for (int i = 0; i < 5; i++) {
+            glBindVertexArray(vao[i]);
+            glBindBuffer(GL_ARRAY_BUFFER, buffer[i]);
+            glBufferData(GL_ARRAY_BUFFER, sizeof(point[i]), point[i], GL_STATIC_DRAW);
+            glEnableVertexAttribArray(vertex_loc);
+            glVertexAttribPointer(vertex_loc, 4, GL_FLOAT, GL_FALSE, 0,
+			BUFFER_OFFSET(0));
 
-  glGenBuffers(6, ebo4);
-
-
-  for (int i = 0; i < 6; i++) {
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo4[i]);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, 4*sizeof(GLuint), face[i], GL_STATIC_DRAW);
-  }
-
+            glGenBuffers(6, ebo);
+            for (int index = 0; index < 6; index++) {
+                glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo[index]);
+                glBufferData(GL_ELEMENT_ARRAY_BUFFER, 4*sizeof(GLuint), face[index], GL_STATIC_DRAW);
+            }
+        }
 
 }
 
 
 void building::draw(vec4 colour[]) const
 {
+    //Drawing the body, pillarPF, pillarDF, roof, pillarPR, pillarDR, and windows
+    for (int i = 0; i < num; i++) {
+        glUniformMatrix4fv(model_loc, 1, GL_TRUE, model);
 
-  glUniformMatrix4fv(model_loc, 1, GL_TRUE, model);
+        glBindVertexArray(vao[i]);
+        for(int index = 0; index < 6; index++) {
+            GLfloat v = 0.75 * (index+1)/6.0;
 
-  glBindVertexArray(vao[0]);
-  for (int i = 0; i < 6; i++) {
-    GLfloat v = 0.75 * (i+1)/6.0;
-    glUniform4fv(face_loc, 1, colour[0]);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo[i]);
-    glDrawElements(GL_TRIANGLE_FAN, 4, GL_UNSIGNED_INT, nullptr);
-  }
-
-
-  glBindVertexArray(vao[1]);
-  for (int i = 0; i <6; i++) {
-    glUniform4fv(face_loc, 1, colour[1]);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo2[i]);
-    glDrawElements(GL_TRIANGLE_FAN, 4, GL_UNSIGNED_INT, nullptr);
-
-  }
-
-  glBindVertexArray(vao[2]);
-  for (int i = 0; i <6; i++) {
-        GLfloat v = 0.75 * (i+1)/6.0;
-        if (TYPE == 4 ){
-        glUniform4fv(face_loc, 1, vec4(0,0,0,1));
-        } else {
-        glUniform4fv(face_loc, 1, colour[2]);
+            //If statements to make the object a certain colour depending on which surface it is
+            if (i == 1) {
+              glUniform4fv(face_loc, 1, colour[0]);
+            } else if (i == 1) {
+              glUniform4fv(face_loc, 1, colour[1]);
+            } else if (i == 2) {
+              if (TYPE == 4) {
+                glUniform4fv(face_loc, 1, vec4(0,0,0,1));
+              } else {
+                glUniform4fv(face_loc, 1, colour[2]);
+              }
+            } else if (i==3 || i == 4) {
+              glUniform4fv(face_loc, 1, vec4(0,0,0,1));
+            }
+            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo[index]);
+            glDrawElements(GL_TRIANGLE_FAN, 4, GL_UNSIGNED_INT, nullptr);
         }
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo3[i]);
-    glDrawElements(GL_TRIANGLE_FAN, 4, GL_UNSIGNED_INT, nullptr);
-  }
-
-    glBindVertexArray(vao[3]);
-  for (int i = 0; i <6; i++) {
-    glUniform4fv(face_loc, 1, vec4(0,0,0,1));
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo3[i]);
-    glDrawElements(GL_TRIANGLE_FAN, 4, GL_UNSIGNED_INT, nullptr);
-  }
-
-      glBindVertexArray(vao[4]);
-  for (int i = 0; i <6; i++) {
-    glUniform4fv(face_loc, 1, vec4(0,0,0,1));
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo3[i]);
-    glDrawElements(GL_TRIANGLE_FAN, 4, GL_UNSIGNED_INT, nullptr);
-  }
+    }
 
 }

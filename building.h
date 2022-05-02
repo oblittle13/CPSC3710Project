@@ -22,11 +22,12 @@ public:
 
 
 private:
-  GLuint vao[5], buffer[5], ebo[6], ebo2[6], ebo3[6], ebo4[6], ebo5[6];
+  GLuint vao[5], buffer[5], ebo[6];
   int TYPE = 1;
   mat4 model;
   int color_index;
   GLuint vertex_loc, face_loc, model_loc;
+  int num;
 };
 
 #endif
